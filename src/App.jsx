@@ -1,1 +1,15 @@
+import React from "react";
+
+export default function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-10">
+      <div className="max-w-xl text-center">
+        <h1 className="text-3xl font-bold">I LIKE ME</h1>
+        <p className="mt-2 text-slate-600">
+          Site is online. Minimal app for deploy verification.
+        </p>
+      </div>
+    </div>
+  );
+}
 
