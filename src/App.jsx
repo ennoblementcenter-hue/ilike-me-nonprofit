@@ -1,12 +1,127 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-// Contact component
+/* ---------- Shared Section wrapper ---------- */
+function Section({ id, title, intro, children }) {
+  return (
+    <section id={id} className="py-16 px-6 md:px-12 bg-slate-50">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-center text-slate-800">{title}</h2>
+        {intro && <p className="mt-3 text-lg text-center text-slate-600 max-w-3xl mx-auto">{intro}</p>}
+        <div className="mt-10">{children}</div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Programs ---------- */
+const PROGRAMS = [
+  {
+    title: "I LIKE ME Youth Program",
+    body: "Self-image, self-trust, and resilience to trauma and ACEs.",
+    img: "/images/ylp.png",
+  },
+  {
+    title: "I LIKE ME Bedside Intervention",
+    body: "Reduce recidivism and catalyze growth during vulnerable moments.",
+    img: "/images/bedside.png",
+  },
+  {
+    title: "I LIKE ME Intimate Violence Prevention",
+    body: "Trauma-informed care, self-respect, and healthy relationship dynamics.",
+    img: "/images/ivp.png",
+  },
+  {
+    title: "I LIKE ME LGBTQ Empowerment",
+    body: "Affirming supports for LGBTQ youth—self-acceptance, esteem, resilience.",
+    img: "/images/lgbtq.png",
+  },
+  {
+    title: "I LIKE ME Staff & Administrator Curriculum",
+    body: "Equip adults with empathy, language, and tools to reinforce Six Pillars.",
+    img: "/images/staff.png",
+  },
+];
+
+function Programs() {
+  return (
+    <Section
+      id="programs"
+      title="Curriculum Pathways"
+      intro="Multi-faceted supports tailored to schools, hospitals, churches, and community orgs."
+    >
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROGRAMS.map((p) => (
+          <div key={p.title} className="rounded-2xl border bg-white overflow-hidden">
+            <img
+              src={p.img}
+              alt={p.title}
+              className="h-48 w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1200&auto=format&fit=crop";
+              }}
+            />
+            <div className="p-5">
+              <h3 className="text-lg font-bold text-teal-700">{p.title}</h3>
+              <p className="text-slate-600 text-sm mt-1">{p.body}</p>
+              <div className="mt-4 flex gap-2">
+                <a href="#" className="rounded-full px-4 py-2 text-white text-sm font-semibold bg-orange-500">
+                  Book a call
+                </a>
+                <a
+                  href="#"
+                  className="rounded-full px-4 py-2 text-sm font-semibold border border-teal-600 text-teal-700"
+                >
+                  Request proposal
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Testimonials ---------- */
+const TESTIMONIALS = [
+  { quote: "Students named their worth and repaired relationships.", name: "Assistant Principal", org: "Urban HS" },
+  { quote: "The bedside intervention changed my son’s trajectory.", name: "Parent", org: "Children’s Hospital" },
+  { quote: "Staff now share language for empathy and accountability.", name: "Program Director", org: "Community Center" },
+];
+
+function Testimonials() {
+  const [i, setI] = useState(0);
+  const timer = useRef(null);
+  useEffect(() => {
+    timer.current = setInterval(() => setI((p) => (p + 1) % TESTIMONIALS.length), 5000);
+    return () => clearInterval(timer.current);
+  }, []);
+  const t = TESTIMONIALS[i];
+  return (
+    <Section id="testimonials" title="Testimonials" intro="Real outcomes in real communities.">
+      <div className="rounded-3xl border bg-white p-6 md:p-10 max-w-4xl mx-auto">
+        <p className="text-lg md:text-xl font-semibold leading-snug">“{t.quote}”</p>
+        <div className="mt-3 text-sm text-slate-600">— {t.name}, {t.org}</div>
+        <div className="mt-6 flex gap-2">
+          {TESTIMONIALS.map((_, idx) => (
+            <button
+              key={idx}
+              aria-label={`Slide ${idx + 1}`}
+              onClick={() => setI(idx)}
+              className={`h-2 w-2 rounded-full ${i === idx ? "opacity-100" : "opacity-40"} bg-teal-600`}
+            />
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Contact (Netlify Form) ---------- */
 function Contact() {
   return (
-    <section id="contact" className="p-10">
-      <h2 className="text-2xl font-bold mb-4">
-        Contact — Let’s connect on alignment, pilots, and next steps
-      </h2>
+    <Section id="contact" title="Contact" intro="Let’s connect on alignment, pilots, and next steps.">
       <div className="grid gap-6 md:grid-cols-2">
         <form
           name="contact"
@@ -17,9 +132,7 @@ function Contact() {
           className="rounded-2xl border bg-white p-6"
         >
           <input type="hidden" name="form-name" value="contact" />
-          <p className="hidden">
-            <label>Don’t fill this: <input name="bot-field" /></label>
-          </p>
+          <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
 
           <label className="grid gap-1">
             <span className="text-sm font-medium">Full name</span>
@@ -34,15 +147,16 @@ function Contact() {
             <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" required />
           </label>
 
-          <button
-            className="mt-3 rounded-full px-5 py-3 text-white font-semibold"
-            style={{ backgroundColor: "#FF6A13" }}
-          >
+          <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
             Send
           </button>
         </form>
 
-        <div className="rounded-2xl border bg-white p-6">…contact details…</div>
+        <div className="rounded-2xl border bg-white p-6">
+          <p className="font-semibold mb-2">I LIKE ME Nonprofit</p>
+          <p>Email: info@ilikeme.org</p>
+          <p>Atlanta, GA</p>
+        </div>
       </div>
 
       {typeof window !== "undefined" &&
@@ -51,19 +165,28 @@ function Contact() {
             Thanks—your message was sent.
           </div>
         )}
-    </section>
+    </Section>
   );
 }
 
-// Default App wrapper
+/* ---------- App shell ---------- */
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-10">
-      <div className="max-w-xl text-center mb-10">
-        <h1 className="text-3xl font-bold">I LIKE ME</h1>
-        <p className="mt-2 text-slate-600">Site is online.</p>
-      </div>
-      <Contact />
+    <div className="min-h-screen bg-white">
+      <header className="bg-teal-600 text-white py-12 text-center">
+        <h1 className="text-4xl font-bold">I LIKE ME</h1>
+        <p className="mt-2 text-lg">Healing shame, building resilient youth and families</p>
+      </header>
+
+      <main>
+        <Programs />
+        <Testimonials />
+        <Contact />
+      </main>
+
+      <footer className="bg-slate-800 text-white text-center py-6">
+        <p>&copy; {new Date().getFullYear()} I LIKE ME Nonprofit</p>
+      </footer>
     </div>
   );
 }
