@@ -13,6 +13,60 @@ function Section({ id, title, intro, children }) {
   );
 }
 
+/* ---------- Header with logo + nav ---------- */
+function useHashRoute() {
+  const get = () => window.location.hash.replace(/^#/, "") || "/";
+  const [path, setPath] = useState(get());
+  useEffect(() => {
+    const on = () => setPath(get());
+    window.addEventListener("hashchange", on);
+    return () => window.removeEventListener("hashchange", on);
+  }, []);
+  const nav = (to) => (window.location.hash = to);
+  return [path, nav];
+}
+
+function Header({ path, nav, cartCount }) {
+  const items = [
+    ["/", "Home"],
+    ["/programs", "Programs"],
+    ["/testimonials", "Testimonials"],
+    ["/gallery", "Gallery"],
+    ["/shop", "Shop"],
+    ["/contact", "Contact"],
+  ];
+  return (
+    <header className="bg-teal-600 text-white">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
+        <button onClick={() => nav("/")} className="flex items-center gap-3">
+          <img src="/logo.png" alt="I LIKE ME logo" className="h-10 w-10 rounded" />
+          <span className="text-2xl font-bold">I LIKE ME</span>
+        </button>
+        <nav className="ml-auto flex flex-wrap gap-2">
+          {items.map(([to, label]) => (
+            <button
+              key={to}
+              onClick={() => nav(to)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                path === to ? "bg-white text-teal-700" : "bg-white/10 hover:bg-white/20"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+          <button
+            onClick={() => nav("/shop")}
+            className="px-4 py-2 rounded-full text-sm font-semibold bg-orange-500"
+            title="Cart"
+          >
+            Cart ({cartCount})
+          </button>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
 /* ---------- Pages ---------- */
 function Home() {
   return (
@@ -34,19 +88,15 @@ function Home() {
 
 const PROGRAMS = [
   { title: "I LIKE ME Youth Program", body: "Self-image, self-trust, resilience to trauma and ACEs.", img: "/images/ylp.png" },
-  { title: "I LIKE ME Bedside Intervention", body: "Reduce recidivism and catalyze growth during vulnerable moments.", img: "/images/bedside.png" },
-  { title: "I LIKE ME Intimate Violence Prevention", body: "Trauma-informed care, self-respect, healthy relationships.", img: "/images/ivp.png" },
-  { title: "I LIKE ME LGBTQ Empowerment", body: "Affirming supports for self-acceptance, esteem, resilience.", img: "/images/lgbtq.png" },
+  { title: "I LIKE ME Bedside Intervention", body: "Reduce recidivism during vulnerable moments.", img: "/images/bedside.png" },
+  { title: "I LIKE ME Intimate Violence Prevention", body: "Trauma-informed care and healthy relationships.", img: "/images/ivp.png" },
+  { title: "I LIKE ME LGBTQ Empowerment", body: "Affirming supports for self-acceptance and resilience.", img: "/images/lgbtq.png" },
   { title: "I LIKE ME Staff & Administrator Curriculum", body: "Equip adults to reinforce the Six Pillars.", img: "/images/staff.png" },
 ];
 
 function Programs() {
   return (
-    <Section
-      id="programs"
-      title="Curriculum Pathways"
-      intro="Supports tailored to schools, hospitals, churches, and community orgs."
-    >
+    <Section id="programs" title="Curriculum Pathways" intro="Tailored to schools, hospitals, churches, and community orgs.">
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {PROGRAMS.map((p) => (
           <div key={p.title} className="rounded-2xl border bg-white overflow-hidden">
@@ -108,6 +158,83 @@ function Testimonials() {
   );
 }
 
+/* ---------- Gallery ---------- */
+function Gallery() {
+  const pics = ["/images/g1.jpg","/images/g2.jpg","/images/g3.jpg","/images/g4.jpg","/images/g5.jpg","/images/g6.jpg"];
+  return (
+    <Section id="gallery" title="Gallery" intro="Moments of joy, learning, and courage.">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {pics.map((p, idx) => (
+          <img
+            key={idx}
+            src={p}
+            alt={`I LIKE ME ${idx + 1}`}
+            className="aspect-[4/3] w-full object-cover rounded-xl border bg-white"
+            onError={(e) => { e.currentTarget.src = `https://picsum.photos/seed/ilm${idx}/600/450`; }}
+          />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Simple Shop + Cart (client-side) ---------- */
+const PRODUCTS = [
+  { id: "tee", name: "I LIKE ME Tee", price: 25, img: "/images/shop-tee.jpg" },
+  { id: "hoodie", name: "I LIKE ME Hoodie", price: 45, img: "/images/shop-hoodie.jpg" },
+  { id: "mug", name: "I LIKE ME Mug", price: 15, img: "/images/shop-mug.jpg" },
+];
+
+function Shop({ cart, setCart }) {
+  const add = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
+  const remove = (id) => setCart((c) => {
+    const n = { ...c }; if (!n[id]) return n; n[id] -= 1; if (n[id] <= 0) delete n[id]; return n;
+  });
+
+  const items = PRODUCTS.map((p) => ({ ...p, qty: cart[p.id] || 0 }));
+  const subtotal = items.reduce((s, p) => s + p.price * p.qty, 0);
+
+  return (
+    <Section id="shop" title="Shop Merchandise" intro="Support the mission with branded gear.">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PRODUCTS.map((p) => (
+          <div key={p.id} className="rounded-2xl border bg-white overflow-hidden">
+            <img
+              src={p.img}
+              alt={p.name}
+              className="h-48 w-full object-cover"
+              onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmshop/800/600"; }}
+            />
+            <div className="p-5">
+              <h3 className="text-lg font-bold text-teal-700">{p.name}</h3>
+              <p className="text-slate-600 text-sm">${p.price}</p>
+              <div className="mt-3 flex items-center gap-2">
+                <button onClick={() => remove(p.id)} className="px-3 py-2 rounded border">-</button>
+                <span className="w-8 text-center">{cart[p.id] || 0}</span>
+                <button onClick={() => add(p.id)} className="px-3 py-2 rounded bg-orange-500 text-white">+</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 rounded-2xl border bg-white p-6 max-w-2xl mx-auto">
+        <div className="flex items-center justify-between">
+          <span className="font-semibold">Subtotal</span>
+          <span className="text-lg font-bold">${subtotal.toFixed(2)}</span>
+        </div>
+        <p className="text-sm text-slate-600 mt-2">Taxes and shipping calculated at checkout.</p>
+        <div className="mt-4 flex gap-3">
+          {/* Replace these hrefs with real Stripe/PayPal/Donorbox checkout links */}
+          <a href="#" className="rounded-full px-5 py-3 text-white font-semibold bg-orange-500">Checkout</a>
+          <a href="#" className="rounded-full px-5 py-3 font-semibold border border-teal-600 text-teal-700">Donate instead</a>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Contact ---------- */
 function Contact() {
   return (
     <Section id="contact" title="Contact" intro="Let’s connect on alignment, pilots, and next steps.">
@@ -158,53 +285,23 @@ function Contact() {
   );
 }
 
-/* ---------- Tiny hash router ---------- */
-function useHashRoute() {
-  const get = () => window.location.hash.replace(/^#/, "") || "/";
-  const [path, setPath] = useState(get());
-  useEffect(() => {
-    const on = () => setPath(get());
-    window.addEventListener("hashchange", on);
-    return () => window.removeEventListener("hashchange", on);
-  }, []);
-  const nav = (to) => (window.location.hash = to);
-  return [path, nav];
-}
-
-/* ---------- App shell with nav ---------- */
+/* ---------- App shell with router ---------- */
 export default function App() {
   const [path, nav] = useHashRoute();
+  const [cart, setCart] = useState({});
+
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="bg-teal-600 text-white py-12">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-4 md:gap-8">
-          <h1 className="text-3xl font-bold mr-auto">I LIKE ME</h1>
-          <nav className="flex flex-wrap gap-2">
-            {[
-              ["/", "Home"],
-              ["/programs", "Programs"],
-              ["/testimonials", "Testimonials"],
-              ["/contact", "Contact"],
-            ].map(([to, label]) => (
-              <button
-                key={to}
-                onClick={() => nav(to)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                  path === to ? "bg-white text-teal-700" : "bg-white/10 hover:bg-white/20"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <Header path={path} nav={nav} cartCount={cartCount} />
 
       <main>
         {path === "/" && <Home />}
         {path === "/programs" && <Programs />}
         {path === "/testimonials" && <Testimonials />}
+        {path === "/gallery" && <Gallery />}
+        {path === "/shop" && <Shop cart={cart} setCart={setCart} />}
         {path === "/contact" && <Contact />}
       </main>
 
