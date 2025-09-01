@@ -1,17 +1,25 @@
+import React from "react";
+
+// Contact component
 function Contact() {
   return (
-    <Section id="contact" title="Contact" intro="Let’s connect on alignment, pilots, and next steps.">
+    <section id="contact" className="p-10">
+      <h2 className="text-2xl font-bold mb-4">
+        Contact — Let’s connect on alignment, pilots, and next steps
+      </h2>
       <div className="grid gap-6 md:grid-cols-2">
         <form
           name="contact"
           method="POST"
           data-netlify="true"
           netlify-honeypot="bot-field"
-          action="/?thanks=1"   // causes a real reload, clears fields
+          action="/?thanks=1"
           className="rounded-2xl border bg-white p-6"
         >
           <input type="hidden" name="form-name" value="contact" />
-          <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
+          <p className="hidden">
+            <label>Don’t fill this: <input name="bot-field" /></label>
+          </p>
 
           <label className="grid gap-1">
             <span className="text-sm font-medium">Full name</span>
@@ -26,7 +34,10 @@ function Contact() {
             <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" required />
           </label>
 
-          <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold" style={{ backgroundColor: "#FF6A13" }}>
+          <button
+            className="mt-3 rounded-full px-5 py-3 text-white font-semibold"
+            style={{ backgroundColor: "#FF6A13" }}
+          >
             Send
           </button>
         </form>
@@ -34,12 +45,25 @@ function Contact() {
         <div className="rounded-2xl border bg-white p-6">…contact details…</div>
       </div>
 
-      {/* Thank-you banner after redirect */}
-      {typeof window !== "undefined" && new URLSearchParams(window.location.search).get("thanks") === "1" && (
-        <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
-          Thanks—your message was sent.
-        </div>
-      )}
-    </Section>
+      {typeof window !== "undefined" &&
+        new URLSearchParams(window.location.search).get("thanks") === "1" && (
+          <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
+            Thanks—your message was sent.
+          </div>
+        )}
+    </section>
+  );
+}
+
+// Default App wrapper
+export default function App() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-10">
+      <div className="max-w-xl text-center mb-10">
+        <h1 className="text-3xl font-bold">I LIKE ME</h1>
+        <p className="mt-2 text-slate-600">Site is online.</p>
+      </div>
+      <Contact />
+    </div>
   );
 }
