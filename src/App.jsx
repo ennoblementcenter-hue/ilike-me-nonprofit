@@ -178,22 +178,17 @@ function Gallery() {
   );
 }
 
-/* ---------- Simple Shop + Cart (client-side) ---------- */
+/* ---------- Shop (Stripe links per item) ---------- */
 const PRODUCTS = [
-  { id: "tee", name: "I LIKE ME Tee", price: 25, img: "/images/shop-tee.jpg" },
-  { id: "hoodie", name: "I LIKE ME Hoodie", price: 45, img: "/images/shop-hoodie.jpg" },
-  { id: "mug", name: "I LIKE ME Mug", price: 15, img: "/images/shop-mug.jpg" },
+  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png", link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
+  { id: "boop-book", name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png", link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
+  { id: "ilm-hat", name: "I LIKE ME Hat", price: 20, img: "/images/shop-blk-n-white-hat.png", link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
+  { id: "ilm-mug", name: "I LIKE ME Mug", price: 15, img: "/images/shop-ILMmug.png", link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
+  { id: "ilm-tee", name: "I LIKE ME T-Shirt", price: 15, img: "/images/shop-blk-tee.png", link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
+  { id: "ilm-journal", name: "I LIKE ME Affirmational Journal", price: 12, img: "/images/shop-ILMJournal.png", link: "https://buy.stripe.com/00w9ASdM2c6ibqWg4G48003" },
 ];
 
-function Shop({ cart, setCart }) {
-  const add = (id) => setCart((c) => ({ ...c, [id]: (c[id] || 0) + 1 }));
-  const remove = (id) => setCart((c) => {
-    const n = { ...c }; if (!n[id]) return n; n[id] -= 1; if (n[id] <= 0) delete n[id]; return n;
-  });
-
-  const items = PRODUCTS.map((p) => ({ ...p, qty: cart[p.id] || 0 }));
-  const subtotal = items.reduce((s, p) => s + p.price * p.qty, 0);
-
+function Shop() {
   return (
     <Section id="shop" title="Shop Merchandise" intro="Support the mission with branded gear.">
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -208,15 +203,21 @@ function Shop({ cart, setCart }) {
             <div className="p-5">
               <h3 className="text-lg font-bold text-teal-700">{p.name}</h3>
               <p className="text-slate-600 text-sm">${p.price}</p>
-              <div className="mt-3 flex items-center gap-2">
-                <button onClick={() => remove(p.id)} className="px-3 py-2 rounded border">-</button>
-                <span className="w-8 text-center">{cart[p.id] || 0}</span>
-                <button onClick={() => add(p.id)} className="px-3 py-2 rounded bg-orange-500 text-white">+</button>
-              </div>
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500"
+              >
+                Buy with Stripe
+              </a>
             </div>
           </div>
         ))}
       </div>
+    </Section>
+  );
+}
 
       <div className="mt-8 rounded-2xl border bg-white p-6 max-w-2xl mx-auto">
         <div className="flex items-center justify-between">
