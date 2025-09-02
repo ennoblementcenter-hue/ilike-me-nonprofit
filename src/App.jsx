@@ -180,11 +180,11 @@ function Gallery() {
 
 /* ---------- Shop (Stripe links per item) ---------- */
 const PRODUCTS = [
-  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png", link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
-  { id: "boop-book", name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png", link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
-  { id: "ilm-hat", name: "I LIKE ME Hat", price: 20, img: "/images/shop-blk-n-white-hat.png", link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
-  { id: "ilm-mug", name: "I LIKE ME Mug", price: 15, img: "/images/shop-ILMmug.png", link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
-  { id: "ilm-tee", name: "I LIKE ME T-Shirt", price: 15, img: "/images/shop-blk-tee.png", link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
+  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png",           link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
+  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png",     link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
+  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png",link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
+  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png",         link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
+  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png",        link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
   { id: "ilm-journal", name: "I LIKE ME Affirmational Journal", price: 12, img: "/images/shop-ILMJournal.png", link: "https://buy.stripe.com/00w9ASdM2c6ibqWg4G48003" },
 ];
 
