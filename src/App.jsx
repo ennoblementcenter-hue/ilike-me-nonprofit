@@ -86,26 +86,39 @@ function Home() {
   );
 }
 
+const PROGRAMS = [
+  { title: "I LIKE ME Youth Program", body: "Self-image, self-trust, resilience to trauma and ACEs.", img: "/images/ylp.png" },
+  { title: "Bedside Intervention", body: "Reduce recidivism. Catalyze growth during vulnerable moments.", img: "/images/bedside.png" },
+  { title: "Intimate Violence Prevention", body: "Trauma-informed care and healthy relationships.", img: "/images/ivp.png" },
+  { title: "LGBTQ Empowerment", body: "Affirming supports for self-acceptance and resilience.", img: "/images/lgbtq.png" },
+  { title: "Staff & Administrator", body: "Equip adults to reinforce the Six Pillars.", img: "/images/staff.png" },
+];
 function Programs() {
   return (
-    <Section
-      id="programs"
-      title="Curriculum Pathways"
-      intro="Tailored to schools, hospitals, churches, and community orgs."
-    >
-      <p className="text-center text-slate-600">
-        Add program cards here (Youth, Bedside, IPV, LGBTQ, Staff).
-      </p>
+    <Section id="programs" title="Curriculum Pathways" intro="Tailored to schools, hospitals, churches, and community orgs.">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROGRAMS.map(p=>(
+          <div key={p.title} className="rounded-2xl border bg-white overflow-hidden">
+            <img src={p.img} alt={p.title} className="h-48 w-full object-cover"
+                 onError={(e)=>{e.currentTarget.src="https://picsum.photos/seed/ilmprog/800/600";}}/>
+            <div className="p-5">
+              <h3 className="text-lg font-bold text-teal-700">{p.title}</h3>
+              <p className="text-slate-600 text-sm mt-1">{p.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </Section>
   );
 }
 
 function Testimonials() {
   const TESTIMONIALS = [
-    { quote: "Students named their worth and repaired relationships.", name: "Assistant Principal" },
-    { quote: "The bedside intervention changed my son’s trajectory.", name: "Parent" },
-    { quote: "Staff now share language for empathy and accountability.", name: "Program Director" },
-  ];
+  { quote: "Students named their worth and repaired relationships.", name: "Assistant Principal", org: "Urban HS" },
+  { quote: "The bedside intervention changed my son’s trajectory.", name: "Parent", org: "Children’s Hospital" },
+  { quote: "Staff now share language for empathy and accountability.", name: "Program Director", org: "Community Center" },
+];
+
   const [i, setI] = useState(0);
   const timer = useRef(null);
   useEffect(() => {
@@ -124,7 +137,7 @@ function Testimonials() {
 }
 
 function Gallery() {
-  const pics = ["/images/g1.jpg", "/images/g2.jpg", "/images/g3.jpg"];
+  const pics = ["/images/g1.jpg","/images/g2.jpg","/images/g3.jpg","/images/g4.jpg","/images/g5.jpg","/images/g6.jpg"];  
   return (
     <Section id="gallery" title="Gallery" intro="Moments of joy, learning, and courage.">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
