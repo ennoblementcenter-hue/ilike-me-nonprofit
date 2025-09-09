@@ -298,7 +298,13 @@ function Inquire() {
             <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
               Thanks—your request was sent. We’ll contact you shortly.
             </div>
-        )}
+{/* Calendly embed */}
+<div
+  className="calendly-inline-widget mt-10"
+  data-url="https://calendly.com/YOUR-USERNAME"
+  style={{ minWidth: "320px", height: "700px" }}
+></div>
+          )}
       </form>
     </Section>
   );
