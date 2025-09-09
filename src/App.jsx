@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 /* ---------- Section wrapper ---------- */
 function Section({ id, title, intro, children }) {
@@ -15,7 +15,7 @@ function Section({ id, title, intro, children }) {
 
 /* ---------- Hash router ---------- */
 function useHashRoute() {
-  const get = () => window.location.hash.replace(/^#/, "") || "/";
+  const get = () => (window.location.hash.replace(/^#/, "") || "/");
   const [path, setPath] = useState(get());
   useEffect(() => {
     const on = () => setPath(get());
@@ -131,7 +131,6 @@ const PROGRAMS = [
     img: "/images/reentry.png",
   },
 ];
-
 const PROGRAMS_MAP = Object.fromEntries(PROGRAMS.map((p) => [p.slug, p]));
 
 /* ---------- Programs list ---------- */
@@ -145,9 +144,7 @@ function Programs({ nav }) {
               src={p.img}
               alt={p.title}
               className="h-48 w-full object-cover"
-              onError={(e) => {
-                e.currentTarget.src = "https://picsum.photos/seed/ilmprog/800/600";
-              }}
+              onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmprog/800/600"; }}
             />
             <div className="p-5">
               <h3 className="text-lg font-bold text-teal-700">{p.title}</h3>
@@ -182,26 +179,23 @@ function Programs({ nav }) {
 
 /* ---------- Program detail ---------- */
 function ProgramDetail({ slug, nav }) {
-  const p = PROGRAMS_MAP[slug];
+  const clean = (slug || "").split("?")[0];
+  const p = PROGRAMS_MAP[clean];
   if (!p) {
     return (
       <Section id="program" title="Program not found">
-        <button onClick={() => nav("/programs")} className="rounded-full px-4 py-2 border">
-          Back to Programs
-        </button>
+        <button onClick={() => nav("/programs")} className="rounded-full px-4 py-2 border">Back to Programs</button>
       </Section>
     );
   }
   return (
-    <Section id={`program-${slug}`} title={p.title} intro={p.blurb}>
+    <Section id={`program-${clean}`} title={p.title} intro={p.blurb}>
       <div className="grid md:grid-cols-2 gap-6">
         <img
           src={p.img}
           alt={p.title}
           className="w-full h-72 object-cover rounded-2xl border"
-          onError={(e) => {
-            e.currentTarget.src = "https://picsum.photos/seed/ilmprogdetail/1000/700";
-          }}
+          onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmprogdetail/1000/700"; }}
         />
         <div className="rounded-2xl border bg-white p-6">
           <p className="text-slate-700">{p.long}</p>
@@ -211,21 +205,9 @@ function ProgramDetail({ slug, nav }) {
             <li>Pre/post measures and reporting</li>
           </ul>
           <div className="mt-6 flex flex-wrap gap-2">
-            <button
-              onClick={() => nav(`/inquire?program=${slug}`)}
-              className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold"
-            >
-              Request proposal
-            </button>
-            <a
-              href={`mailto:info@ilikeme.org?subject=Book a call: ${encodeURIComponent(p.title)}`}
-              className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold"
-            >
-              Book a call
-            </a>
-            <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">
-              Back
-            </button>
+            <button onClick={() => nav(`/inquire?program=${clean}`)} className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold">Request proposal</button>
+            <a href={`mailto:info@ilikeme.org?subject=Book a call: ${encodeURIComponent(p.title)}`} className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold">Book a call</a>
+            <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">Back</button>
           </div>
         </div>
       </div>
@@ -311,7 +293,7 @@ function Inquire() {
   );
 }
 
-/* ---------- Testimonials grid ---------- */
+/* ---------- Testimonials ---------- */
 const TESTIMONIALS = [
   { quote: "Students named their worth and repaired relationships.", name: "Assistant Principal", org: "Urban HS" },
   { quote: "The bedside intervention changed my son’s trajectory.", name: "Parent", org: "Children’s Hospital" },
@@ -352,16 +334,15 @@ function Gallery() {
   );
 }
 
-/* ---------- Shop (Stripe links per item) ---------- */
+/* ---------- Shop (Stripe links) ---------- */
 const PRODUCTS = [
-  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png", link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
-  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png", link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
-  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png", link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
-  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png", link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
-  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png", link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
+  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png",           link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
+  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png",     link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
+  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png",link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
+  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png",         link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
+  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png",        link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
   { id: "ilm-journal", name: "I LIKE ME Affirmational Journal", price: 12, img: "/images/shop-ILMJournal.png", link: "https://buy.stripe.com/00w9ASdM2c6ibqWg4G48003" },
 ];
-
 function Shop() {
   return (
     <Section id="shop" title="Shop Merchandise" intro="Support the mission with branded gear.">
@@ -377,12 +358,7 @@ function Shop() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-teal-700">{p.name}</h3>
               <p className="text-slate-600 text-sm">${p.price}</p>
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500"
-              >
+              <a href={p.link} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
                 Buy with Stripe
               </a>
             </div>
@@ -421,9 +397,7 @@ function Contact() {
           <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" required />
         </label>
 
-        <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
-          Send
-        </button>
+        <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">Send</button>
       </form>
     </Section>
   );
@@ -436,19 +410,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white">
       <Header path={path} nav={nav} />
-     <main>
-  {path === "/" && <Home />}
-  {path === "/programs" && <Programs nav={nav} />}
-  {path.startsWith("/program/") && (
-    <ProgramDetail slug={path.split("?")[0].split("/")[2]} nav={nav} />
-  )}
-  {path.startsWith("/inquire") && <Inquire />}
-  {path === "/testimonials" && <Testimonials />}
-  {path === "/gallery" && <Gallery />}
-  {path === "/shop" && <Shop />}
-  {path === "/contact" && <Contact />}
-</main>
-
+      <main>
+        {path === "/" && <Home />}
+        {path === "/programs" && <Programs nav={nav} />}
+        {path.startsWith("/program/") && <ProgramDetail slug={path.split("?")[0].split("/")[2]} nav={nav} />}
+        {path.startsWith("/inquire") && <Inquire />}
+        {path === "/testimonials" && <Testimonials />}
+        {path === "/gallery" && <Gallery />}
+        {path === "/shop" && <Shop />}
+        {path === "/contact" && <Contact />}
+      </main>
       <footer className="bg-slate-800 text-white text-center py-6">
         <p>&copy; {new Date().getFullYear()} I LIKE ME Nonprofit</p>
       </footer>
