@@ -286,7 +286,7 @@ function Inquire() {
       {/* Calendly embed */}
       <div
         className="calendly-inline-widget mt-10"
-        data-url="https://calendly.com/YOUR-USERNAME"
+        data-url="https://calendly.com/drglover/30min"
         style={{ minWidth: "320px", height: "700px" }}
       />
     </Section>
