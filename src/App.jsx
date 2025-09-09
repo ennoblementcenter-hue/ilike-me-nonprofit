@@ -233,13 +233,16 @@ function ProgramDetail({ slug, nav }) {
   );
 }
 
-/* ---------- Inquire (Netlify lead form) ---------- */
+/* ---------- Inquire (Netlify lead form + Calendly) ---------- */
 function getQueryFromHash() {
-  const [, q = ""] = (window.location.hash || "").split("?");
+  const hash = window.location.hash || "";
+  const q = hash.includes("?") ? hash.split("?")[1] : "";
   return new URLSearchParams(q);
 }
 function Inquire() {
-  const program = typeof window !== "undefined" ? getQueryFromHash().get("program") || "" : "";
+  const params = typeof window !== "undefined" ? getQueryFromHash() : new URLSearchParams();
+  const program = params.get("program") || "";
+  const thanks = params.get("thanks") === "1";
   const progTitle = PROGRAMS_MAP[program]?.title || "General inquiry";
 
   return (
@@ -249,10 +252,9 @@ function Inquire() {
         method="POST"
         data-netlify="true"
         netlify-honeypot="bot-field"
-        action="/?thanks=1#inquire"
+        action="/#/inquire?thanks=1"
         className="rounded-2xl border bg-white p-6 max-w-xl mx-auto"
       >
-        {/* Required by Netlify */}
         <input type="hidden" name="form-name" value="program-inquiry" />
         <input type="hidden" name="program" value={progTitle} />
         <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
@@ -292,24 +294,22 @@ function Inquire() {
           Send request
         </button>
 
-        {/* Thank-you banner after redirect */}
-        {typeof window !== "undefined" &&
-          new URLSearchParams(window.location.search).get("thanks") === "1" && (
-            <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
-              Thanks—your request was sent. We’ll contact you shortly.
-            </div>
-{/* Calendly embed */}
-<div
-  className="calendly-inline-widget mt-10"
-  data-url="https://calendly.com/YOUR-USERNAME"
-  style={{ minWidth: "320px", height: "700px" }}
-></div>
-          )}
+        {thanks && (
+          <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
+            Thanks—your request was sent. We’ll contact you shortly.
+          </div>
+        )}
       </form>
+
+      {/* Calendly embed */}
+      <div
+        className="calendly-inline-widget mt-10"
+        data-url="https://calendly.com/YOUR-USERNAME"
+        style={{ minWidth: "320px", height: "700px" }}
+      />
     </Section>
   );
 }
-
 
 /* ---------- Testimonials grid ---------- */
 const TESTIMONIALS = [
