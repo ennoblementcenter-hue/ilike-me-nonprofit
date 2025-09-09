@@ -9,12 +9,17 @@
   <body>
     <div id="root"></div>
 
-    <!-- Netlify form detection (contact) -->
-    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <textarea name="message"></textarea>
-    </form>
+   <!-- Netlify form detection (program-inquiry) -->
+<form name="program-inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="organization" />
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="tel" name="phone" />
+  <input type="text" name="program" />
+  <textarea name="message"></textarea>
+  <input type="checkbox" name="consent" />
+</form>
+
 
     <!-- Netlify form detection (program-inquiry) -->
     <form name="program-inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
