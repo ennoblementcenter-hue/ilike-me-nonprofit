@@ -233,7 +233,7 @@ function ProgramDetail({ slug, nav }) {
   );
 }
 
-/* ---------- Inquire (Netlify form) ---------- */
+/* ---------- Inquire (Netlify lead form) ---------- */
 function getQueryFromHash() {
   const [, q = ""] = (window.location.hash || "").split("?");
   return new URLSearchParams(q);
@@ -241,6 +241,7 @@ function getQueryFromHash() {
 function Inquire() {
   const program = typeof window !== "undefined" ? getQueryFromHash().get("program") || "" : "";
   const progTitle = PROGRAMS_MAP[program]?.title || "General inquiry";
+
   return (
     <Section id="inquire" title="Request a Proposal" intro={progTitle}>
       <form
@@ -251,6 +252,7 @@ function Inquire() {
         action="/?thanks=1#inquire"
         className="rounded-2xl border bg-white p-6 max-w-xl mx-auto"
       >
+        {/* Required by Netlify */}
         <input type="hidden" name="form-name" value="program-inquiry" />
         <input type="hidden" name="program" value={progTitle} />
         <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
@@ -259,26 +261,49 @@ function Inquire() {
           <span className="text-sm font-medium">Organization</span>
           <input className="rounded-xl border px-3 py-2" name="organization" required />
         </label>
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Your name</span>
-          <input className="rounded-xl border px-3 py-2" name="name" required />
+
+        <div className="grid md:grid-cols-2 gap-3">
+          <label className="grid gap-1">
+            <span className="text-sm font-medium">Contact name</span>
+            <input className="rounded-xl border px-3 py-2" name="name" required />
+          </label>
+          <label className="grid gap-1">
+            <span className="text-sm font-medium">Email</span>
+            <input className="rounded-xl border px-3 py-2" type="email" name="email" required />
+          </label>
+        </div>
+
+        <label className="grid gap-1 mt-3">
+          <span className="text-sm font-medium">Phone</span>
+          <input className="rounded-xl border px-3 py-2" type="tel" name="phone" />
         </label>
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Email</span>
-          <input className="rounded-xl border px-3 py-2" type="email" name="email" required />
-        </label>
-        <label className="grid gap-1 mb-3">
+
+        <label className="grid gap-1 mt-3">
           <span className="text-sm font-medium">What outcomes are you seeking?</span>
           <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" />
         </label>
 
-        <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
+        <label className="mt-3 flex items-center gap-2 text-sm">
+          <input type="checkbox" name="consent" required />
+          I agree to be contacted about this proposal.
+        </label>
+
+        <button className="mt-4 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
           Send request
         </button>
+
+        {/* Thank-you banner after redirect */}
+        {typeof window !== "undefined" &&
+          new URLSearchParams(window.location.search).get("thanks") === "1" && (
+            <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
+              Thanks—your request was sent. We’ll contact you shortly.
+            </div>
+        )}
       </form>
     </Section>
   );
 }
+
 
 /* ---------- Testimonials grid ---------- */
 const TESTIMONIALS = [
