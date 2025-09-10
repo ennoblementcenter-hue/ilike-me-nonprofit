@@ -255,8 +255,7 @@ function Inquire() {
   const thanks = params.get("thanks") === "1";
   // ...
 }
-
-  return (
+   (
     <Section id="inquire" title="Request a Proposal" intro={progTitle}>
       <form
         name="program-inquiry"
