@@ -56,7 +56,7 @@ function Header({ path, nav }) {
           ))}
           {/* Calendly in nav */}
           <a
-            href="https://calendly.com/YOUR-USERNAME/30min"
+            href="https://calendly.com/ilikeme"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 rounded-full text-sm font-semibold bg-orange-500 hover:bg-orange-600"
@@ -172,7 +172,7 @@ function Programs({ nav }) {
                 </button>
                 {/* Calendly on cards */}
                 <a
-                  href="https://calendly.com/YOUR-USERNAME/30min"
+                  href="https://calendly.com/ilikeme"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-full px-4 py-2 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700"
@@ -437,7 +437,7 @@ export default function App() {
     Ready to bring I LIKE ME to your organization?
   </p>
   <a
-    href="https://calendly.com/YOUR-USERNAME/30min"
+    href="https://calendly.com/ilikeme"
     target="_blank"
     rel="noopener noreferrer"
     className="px-5 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
