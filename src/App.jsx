@@ -245,17 +245,16 @@ function ProgramDetail({ slug, nav }) {
   );
 }
 
-/* ---------- Inquire (Netlify form + Calendly embed) ---------- */
 function getQueryFromHash() {
-  const hash = window.location.hash || "";
-  const q = hash.includes("?") ? hash.split("?")[1] : "";
+  const h = window.location.hash || "";
+  const q = h.includes("?") ? h.split("?")[1] : "";
   return new URLSearchParams(q);
 }
 function Inquire() {
   const params = typeof window !== "undefined" ? getQueryFromHash() : new URLSearchParams();
-  const program = params.get("program") || "";
   const thanks = params.get("thanks") === "1";
-  const progTitle = PROGRAMS_MAP[program]?.title || "General inquiry";
+  // ...
+}
 
   return (
     <Section id="inquire" title="Request a Proposal" intro={progTitle}>
