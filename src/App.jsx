@@ -33,8 +33,9 @@ function Header({ path, nav }) {
     ["/testimonials", "Testimonials"],
     ["/gallery", "Gallery"],
     ["/shop", "Shop"],
-    ["#/contact", "Contact"],
+    ["/contact", "Contact"],  // <-- no "#"
   ];
+
   return (
     <header className="bg-teal-600 text-white">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
@@ -54,6 +55,12 @@ function Header({ path, nav }) {
               {label}
             </button>
           ))}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
           {/* Calendly in nav */}
           <a
             href="https://calendly.com/ilikeme"
