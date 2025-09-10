@@ -320,7 +320,6 @@ function Inquire() {
       />
     </Section>
   );
-}
 
 /* ---------- Testimonials ---------- */
 const TESTIMONIALS = [
