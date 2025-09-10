@@ -33,7 +33,7 @@ function Header({ path, nav }) {
     ["/testimonials", "Testimonials"],
     ["/gallery", "Gallery"],
     ["/shop", "Shop"],
-    ["/contact", "Contact"],
+    ["#/contact", "Contact"],
   ];
   return (
     <header className="bg-teal-600 text-white">
@@ -437,7 +437,7 @@ export default function App() {
         {path === "/testimonials" && <Testimonials />}
         {path === "/gallery" && <Gallery />}
         {path === "/shop" && <Shop />}
-        {path === "/contact" && <Contact />}
+        {path === "#/contact" && <Contact />}
       </main>
 <footer className="bg-slate-800 text-white text-center py-8">
   <p className="mb-4 text-lg font-semibold">
