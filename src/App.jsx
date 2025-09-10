@@ -430,14 +430,15 @@ export default function App() {
     <div className="min-h-screen bg-white">
       <Header path={path} nav={nav} />
       <main>
-        {path === "/" && <Home />}
-        {path === "/programs" && <Programs nav={nav} />}
-        {path.startsWith("/program/") && <ProgramDetail slug={path.split("?")[0].split("/")[2]} nav={nav} />}
-        {path.startsWith("/inquire") && <Inquire />}
-        {path === "/testimonials" && <Testimonials />}
-        {path === "/gallery" && <Gallery />}
-        {path === "/shop" && <Shop />}
-        {path === "#/contact" && <Contact />}
+       {path === "/" && <Home />}
+{path === "/programs" && <Programs nav={nav} />}
+{path.startsWith("/program/") && <ProgramDetail slug={path.split("/")[2]} nav={nav} />}
+{path === "/inquire" && <Inquire />}
+{path === "/testimonials" && <Testimonials />}
+{path === "/gallery" && <Gallery />}
+{path === "/shop" && <Shop />}
+{path === "/contact" && <Contact />}   // <-- no "#"
+
       </main>
 <footer className="bg-slate-800 text-white text-center py-8">
   <p className="mb-4 text-lg font-semibold">
