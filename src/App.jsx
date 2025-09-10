@@ -432,9 +432,21 @@ export default function App() {
         {path === "/shop" && <Shop />}
         {path === "/contact" && <Contact />}
       </main>
-      <footer className="bg-slate-800 text-white text-center py-6">
-        <p>&copy; {new Date().getFullYear()} I LIKE ME Nonprofit</p>
-      </footer>
+<footer className="bg-slate-800 text-white text-center py-8">
+  <p className="mb-4 text-lg font-semibold">
+    Ready to bring I LIKE ME to your organization?
+  </p>
+  <a
+    href="https://calendly.com/YOUR-USERNAME/30min"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="px-5 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
+  >
+    Schedule a Call
+  </a>
+  <p className="mt-6 text-sm opacity-80">&copy; {new Date().getFullYear()} I LIKE ME Nonprofit</p>
+</footer>
+
     </div>
   );
 }
