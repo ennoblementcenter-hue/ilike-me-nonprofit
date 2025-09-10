@@ -142,7 +142,6 @@ const PROGRAMS = [
 ];
 const PROGRAMS_MAP = Object.fromEntries(PROGRAMS.map((p) => [p.slug, p]));
 
-/* ---------- Programs list ---------- */
 function Programs({ nav }) {
   return (
     <Section id="programs" title="Curriculum Pathways" intro="Tailored to schools, hospitals, churches, and community orgs.">
@@ -171,9 +170,12 @@ function Programs({ nav }) {
                 >
                   Request proposal
                 </button>
+                {/* Calendly on cards */}
                 <a
-                  href={`mailto:info@ilikeme.org?subject=Book a call: ${encodeURIComponent(p.title)}`}
-                  className="rounded-full px-4 py-2 text-sm font-semibold bg-teal-600 text-white"
+                  href="https://calendly.com/YOUR-USERNAME/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full px-4 py-2 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700"
                 >
                   Book a call
                 </a>
@@ -185,6 +187,7 @@ function Programs({ nav }) {
     </Section>
   );
 }
+
 
 /* ---------- Program detail ---------- */
 function ProgramDetail({ slug, nav }) {
