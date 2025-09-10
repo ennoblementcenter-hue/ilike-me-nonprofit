@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-/* ---------- Section wrapper ---------- */
+/* ---------- Shared section wrapper ---------- */
 function Section({ id, title, intro, children }) {
   return (
     <section id={id} className="py-16 px-6 md:px-12 bg-slate-50">
@@ -13,9 +13,9 @@ function Section({ id, title, intro, children }) {
   );
 }
 
-/* ---------- Hash router ---------- */
+/* ---------- Minimal hash router ---------- */
 function useHashRoute() {
-  const get = () => (window.location.hash.replace(/^#/, "") || "/");
+  const get = () => window.location.hash.replace(/^#/, "") || "/";
   const [path, setPath] = useState(get());
   useEffect(() => {
     const on = () => setPath(get());
@@ -26,6 +26,7 @@ function useHashRoute() {
   return [path, nav];
 }
 
+/* ---------- Header with Calendly in nav ---------- */
 function Header({ path, nav }) {
   const items = [
     ["/", "Home"],
@@ -33,9 +34,8 @@ function Header({ path, nav }) {
     ["/testimonials", "Testimonials"],
     ["/gallery", "Gallery"],
     ["/shop", "Shop"],
-    ["/contact", "Contact"],  // <-- no "#"
+    ["/contact", "Contact"], // no "#" here; router strips it
   ];
-
   return (
     <header className="bg-teal-600 text-white">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
@@ -55,13 +55,6 @@ function Header({ path, nav }) {
               {label}
             </button>
           ))}
-        </nav>
-      </div>
-    </header>
-  );
-}
-
-          {/* Calendly in nav */}
           <a
             href="https://calendly.com/ilikeme"
             target="_blank"
@@ -75,7 +68,6 @@ function Header({ path, nav }) {
     </header>
   );
 }
-
 
 /* ---------- Home ---------- */
 function Home() {
@@ -101,17 +93,17 @@ const PROGRAMS = [
   {
     slug: "youth",
     title: "I LIKE ME Youth Program",
-    blurb: "Self-image, self-trust, resilience to trauma and ACEs.",
+    blurb: "Self-image, self-trust, and resilience to trauma and ACEs.",
     long:
-      "A strengths-based curriculum that helps young people reframe trauma into resilience. Through interactive activities, journaling, and peer dialogue, participants learn to recognize adverse experiences while building self-esteem, emotional literacy, and healthy coping strategies. By centering the Six Pillars—self-care, self-respect, self-esteem, self-acceptance, self-trust, and self-empowerment—youth leave with practical tools for confidence and connection.",
+      "A strengths-based curriculum that helps young people reframe trauma into resilience. Through interactive activities, journaling, and peer dialogue, participants learn to recognize adverse experiences while building self-esteem, emotional literacy, and healthy coping strategies. Centered on the Six Pillars.",
     img: "/images/ylp.png",
   },
   {
     slug: "bedside",
     title: "Bedside Intervention",
-    blurb: "Reduce recidivism. Catalyze growth during vulnerable moments.",
+    blurb: "Reduce recidivism; catalyze growth during vulnerable moments.",
     long:
-      "A hospital- and detention-based intervention that meets individuals at moments of crisis. Facilitators provide trauma-informed conversation, reflective exercises, and linkages to aftercare. The goal is to transform a potentially destabilizing event into an entry point for growth, reducing recidivism and empowering participants to set new life trajectories.",
+      "A hospital- and detention-based intervention that meets individuals at moments of crisis. Facilitators provide trauma-informed conversation, reflective exercises, and linkages to aftercare, turning destabilizing events into entry points for growth.",
     img: "/images/bedside.png",
   },
   {
@@ -119,7 +111,7 @@ const PROGRAMS = [
     title: "Intimate Violence Prevention (IVP)",
     blurb: "Trauma-informed care and healthy relationships.",
     long:
-      "A program designed to break cycles of harm by equipping participants with skills for self-respect, boundary setting, and healthy relationships. Grounded in trauma-informed care, IVP blends education with reflective dialogue to reduce intimate partner violence and restore dignity. Participants gain practical strategies to protect themselves and to cultivate relationships rooted in safety and mutual care.",
+      "Break cycles of harm via skills for self-respect, boundary setting, and healthy relationships. Grounded in trauma-informed care, IVP blends education with reflective dialogue to reduce IPV and restore dignity.",
     img: "/images/ivp.png",
   },
   {
@@ -127,7 +119,7 @@ const PROGRAMS = [
     title: "LGBTQ Empowerment",
     blurb: "Affirming supports for self-acceptance and resilience.",
     long:
-      "A safe and affirming space for LGBTQ youth to embrace identity, strengthen resilience, and find community. This program integrates self-acceptance practices, peer support, and affirmational tools that counter stigma. By fostering belonging and confidence, LGBTQ Empowerment builds protective factors proven to reduce risk behaviors and enhance mental health.",
+      "A safe, affirming space for LGBTQ youth to embrace identity, strengthen resilience, and find community. Integrates self-acceptance practices and peer support to build belonging and confidence.",
     img: "/images/lgbtq.png",
   },
   {
@@ -135,7 +127,7 @@ const PROGRAMS = [
     title: "Staff & Administrator Curriculum",
     blurb: "Equip adults to reinforce the Six Pillars.",
     long:
-      "Training and resources for educators, administrators, and youth-serving professionals. The curriculum equips adults to model empathy, support healing, and enforce accountability in ways that reinforce dignity. Participants leave with strategies to manage classrooms, engage families, and lead organizations aligned with the Six Pillars—creating environments where youth thrive.",
+      "Training for educators and youth-serving professionals. Model empathy, support healing, and enforce accountability that reinforces dignity. Strategies for classroom management, family engagement, and aligned leadership.",
     img: "/images/staff.png",
   },
   {
@@ -143,15 +135,16 @@ const PROGRAMS = [
     title: "Reentry Program",
     blurb: "Support justice-involved youth in successful transitions.",
     long:
-      "The Reentry Program is designed to accompany youth and young adults as they return from detention or incarceration. It combines evidence-informed reentry planning, mentoring, and trauma recovery supports. Participants strengthen their self-worth, learn practical decision-making skills, and build pro-social connections that reduce recidivism. By integrating the Six Pillars with workforce readiness and community engagement, the program helps participants create sustainable pathways toward healing and opportunity.",
+      "Accompanies youth returning from detention. Combines reentry planning, mentoring, and trauma recovery supports. Integrates the Six Pillars with workforce readiness and community engagement to reduce recidivism.",
     img: "/images/reentry.png",
   },
 ];
 const PROGRAMS_MAP = Object.fromEntries(PROGRAMS.map((p) => [p.slug, p]));
 
+/* ---------- Programs grid ---------- */
 function Programs({ nav }) {
   return (
-    <Section id="programs" title="Curriculum Pathways" intro="Tailored to schools, hospitals, churches, and community orgs.">
+    <Section id="programs" title="Curriculum Pathways" intro="For schools, hospitals, churches, and community orgs.">
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {PROGRAMS.map((p) => (
           <div key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
@@ -159,7 +152,9 @@ function Programs({ nav }) {
               src={p.img}
               alt={p.title}
               className="h-48 w-full object-cover"
-              onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmprog/800/600"; }}
+              onError={(e) => {
+                e.currentTarget.src = "https://picsum.photos/seed/ilmprog/800/600";
+              }}
             />
             <div className="p-5">
               <h3 className="text-lg font-bold text-teal-700">{p.title}</h3>
@@ -177,7 +172,6 @@ function Programs({ nav }) {
                 >
                   Request proposal
                 </button>
-                {/* Calendly on cards */}
                 <a
                   href="https://calendly.com/ilikeme"
                   target="_blank"
@@ -195,15 +189,16 @@ function Programs({ nav }) {
   );
 }
 
-
-/* ---------- Program detail ---------- */
+/* ---------- Program Detail ---------- */
 function ProgramDetail({ slug, nav }) {
   const clean = (slug || "").split("?")[0];
   const p = PROGRAMS_MAP[clean];
   if (!p) {
     return (
-      <Section id="program" title="Program not found">
-        <button onClick={() => nav("/programs")} className="rounded-full px-4 py-2 border">Back to Programs</button>
+      <Section id="program-missing" title="Program not found">
+        <button onClick={() => nav("/programs")} className="rounded-full px-4 py-2 border">
+          Back to Programs
+        </button>
       </Section>
     );
   }
@@ -214,7 +209,9 @@ function ProgramDetail({ slug, nav }) {
           src={p.img}
           alt={p.title}
           className="w-full h-72 object-cover rounded-2xl border"
-          onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmprogdetail/1000/700"; }}
+          onError={(e) => {
+            e.currentTarget.src = "https://picsum.photos/seed/ilmprogdetail/1000/700";
+          }}
         />
         <div className="rounded-2xl border bg-white p-6">
           <p className="text-slate-700">{p.long}</p>
@@ -224,16 +221,23 @@ function ProgramDetail({ slug, nav }) {
             <li>Pre/post measures and reporting</li>
           </ul>
           <div className="mt-6 flex flex-wrap gap-2">
-            <button onClick={() => nav(`/inquire?program=${clean}`)} className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold">Request proposal</button>
+            <button
+              onClick={() => nav(`/inquire?program=${clean}`)}
+              className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold"
+            >
+              Request proposal
+            </button>
             <a
-  href="https://calendly.com/ilikeme"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold"
->
-  Book a call
-</a>
-            <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">Back</button>
+              href="https://calendly.com/ilikeme"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold"
+            >
+              Book a call
+            </a>
+            <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">
+              Back
+            </button>
           </div>
         </div>
       </div>
@@ -241,7 +245,7 @@ function ProgramDetail({ slug, nav }) {
   );
 }
 
-/* ---------- Inquire (Netlify lead form + Calendly) ---------- */
+/* ---------- Inquire (Netlify form + Calendly embed) ---------- */
 function getQueryFromHash() {
   const hash = window.location.hash || "";
   const q = hash.includes("?") ? hash.split("?")[1] : "";
@@ -309,7 +313,7 @@ function Inquire() {
         )}
       </form>
 
-      {/* Calendly embed */}
+      {/* Calendly embed (kept external buttons elsewhere) */}
       <div
         className="calendly-inline-widget mt-10"
         data-url="https://calendly.com/ilikeme"
@@ -362,11 +366,11 @@ function Gallery() {
 
 /* ---------- Shop (Stripe links) ---------- */
 const PRODUCTS = [
-  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png",           link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
-  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png",     link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
-  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png",link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
-  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png",         link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
-  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png",        link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
+  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png",            link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
+  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png",      link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
+  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png", link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
+  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png",          link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
+  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png",         link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
   { id: "ilm-journal", name: "I LIKE ME Affirmational Journal", price: 12, img: "/images/shop-ILMJournal.png", link: "https://buy.stripe.com/00w9ASdM2c6ibqWg4G48003" },
 ];
 function Shop() {
@@ -384,7 +388,12 @@ function Shop() {
             <div className="p-5">
               <h3 className="text-lg font-bold text-teal-700">{p.name}</h3>
               <p className="text-slate-600 text-sm">${p.price}</p>
-              <a href={p.link} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500"
+              >
                 Buy with Stripe
               </a>
             </div>
@@ -437,31 +446,37 @@ export default function App() {
     <div className="min-h-screen bg-white">
       <Header path={path} nav={nav} />
       <main>
-       {path === "/" && <Home />}
-{path === "/programs" && <Programs nav={nav} />}
-{path.startsWith("/program/") && <ProgramDetail slug={path.split("/")[2]} nav={nav} />}
-{path === "/inquire" && <Inquire />}
-{path === "/testimonials" && <Testimonials />}
-{path === "/gallery" && <Gallery />}
-{path === "/shop" && <Shop />}
-{path === "/contact" && <Contact />}   // <-- no "#"
-
+        {path === "/" && <Home />}
+        {path === "/programs" && <Programs nav={nav} />}
+        {path.startsWith("/program/") && <ProgramDetail slug={path.split("?")[0].split("/")[2]} nav={nav} />}
+        {path.startsWith("/inquire") && <Inquire />}
+        {path === "/testimonials" && <Testimonials />}
+        {path === "/gallery" && <Gallery />}
+        {path === "/shop" && <Shop />}
+        {path === "/contact" && <Contact />}
       </main>
-<footer className="bg-slate-800 text-white text-center py-8">
-  <p className="mb-4 text-lg font-semibold">
-    Ready to bring I LIKE ME to your organization?
-  </p>
-  <a
-    href="https://calendly.com/ilikeme"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="px-5 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
-  >
-    Schedule a Call
-  </a>
-  <p className="mt-6 text-sm opacity-80">&copy; {new Date().getFullYear()} I LIKE ME Nonprofit</p>
-</footer>
-
+      <footer className="bg-slate-100 py-10 mt-20">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="mb-4">© {new Date().getFullYear()} I LIKE ME. All rights reserved.</p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <a href="#/contact" className="px-4 py-2 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700">
+              Contact
+            </a>
+            <a
+              href="https://calendly.com/ilikeme"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
+            >
+              Schedule a Call
+            </a>
+            <a href="#/inquire" className="px-4 py-2 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700">
+              Request Proposal
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
+F
