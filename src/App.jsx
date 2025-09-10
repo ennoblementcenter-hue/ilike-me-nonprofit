@@ -218,7 +218,14 @@ function ProgramDetail({ slug, nav }) {
           </ul>
           <div className="mt-6 flex flex-wrap gap-2">
             <button onClick={() => nav(`/inquire?program=${clean}`)} className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold">Request proposal</button>
-            <a href={`mailto:info@ilikeme.org?subject=Book a call: ${encodeURIComponent(p.title)}`} className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold">Book a call</a>
+            <a
+  href="https://calendly.com/YOUR-USERNAME/30min"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold"
+>
+  Book a call
+</a>
             <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">Back</button>
           </div>
         </div>
