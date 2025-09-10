@@ -26,7 +26,6 @@ function useHashRoute() {
   return [path, nav];
 }
 
-/* ---------- Header ---------- */
 function Header({ path, nav }) {
   const items = [
     ["/", "Home"],
@@ -43,7 +42,7 @@ function Header({ path, nav }) {
           <img src="/logo.png" alt="I LIKE ME logo" className="h-10 w-10 rounded" />
           <span className="text-2xl font-bold">I LIKE ME</span>
         </button>
-        <nav className="ml-auto flex flex-wrap gap-2">
+        <nav className="ml-auto flex flex-wrap items-center gap-2">
           {items.map(([to, label]) => (
             <button
               key={to}
@@ -55,11 +54,21 @@ function Header({ path, nav }) {
               {label}
             </button>
           ))}
+          {/* Calendly in nav */}
+          <a
+            href="https://calendly.com/YOUR-USERNAME/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-full text-sm font-semibold bg-orange-500 hover:bg-orange-600"
+          >
+            Book a Call
+          </a>
         </nav>
       </div>
     </header>
   );
 }
+
 
 /* ---------- Home ---------- */
 function Home() {
