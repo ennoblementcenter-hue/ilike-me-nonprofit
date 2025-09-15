@@ -317,7 +317,6 @@ function Inquire() {
         style={{ minWidth: "320px", height: "700px" }}
       />
     </Section>
-  );
 
 /* ---------- Testimonials ---------- */
 const TESTIMONIALS = [
