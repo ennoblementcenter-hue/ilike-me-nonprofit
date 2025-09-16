@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-/* ---------- Shared section wrapper ---------- */
-function Section({ id, title, intro, children }) {
-  return (
-    <section id={id} className="py-16 px-6 md:px-12 bg-slate-50">
-      <div className="max-w-6xl mx-auto">
-        {title && <h2 className="text-3xl font-bold text-center text-slate-800">{title}</h2>}
-        {intro && <p className="mt-3 text-lg text-center text-slate-600 max-w-3xl mx-auto">{intro}</p>}
-        <div className="mt-10">{children}</div>
-      </div>
-    </section>
-  );
+/* ---------- Tiny UI helpers ---------- */
+function Container({ children }) {
+  return <div style={{ maxWidth: 1040, margin: "0 auto", padding: "24px" }}>{children}</div>;
+}
+function Card({ children }) {
+  return <div style={{ border: "1px solid #e5e7eb", borderRadius: 16, padding: 16, background: "#fff" }}>{children}</div>;
 }
 
 /* ---------- Minimal hash router ---------- */
@@ -26,451 +21,182 @@ function useHashRoute() {
   return [path, nav];
 }
 
-/* ---------- Header with Calendly in nav ---------- */
-function Header({ path, nav }) {
+/* ---------- Pages ---------- */
+function Home({ nav }) {
+  return (
+    <Container>
+      <h1 style={{ fontSize: 32, marginBottom: 12 }}>I LIKE ME</h1>
+      <p>Healing shame and building resilient youth and families.</p>
+      <div style={{ marginTop: 16 }}>
+        <button onClick={() => nav("/programs")} style={btn}>Programs</button>
+        <a href="#/contact" style={{ ...btn, marginLeft: 8 }}>Contact</a>
+      </div>
+    </Container>
+  );
+}
+
+function Programs({ nav }) {
+  const list = [
+    { slug: "youth", title: "Youth Program" },
+    { slug: "bedside", title: "Bedside Intervention" },
+    { slug: "ipv", title: "Intimate Violence Prevention" },
+    { slug: "lgbtq", title: "LGBTQ Empowerment" },
+    { slug: "staff", title: "Staff & Administrator Curriculum" },
+    { slug: "reentry", title: "Reentry Program" },
+  ];
+  return (
+    <Container>
+      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Programs</h2>
+      <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
+        {list.map(p => (
+          <Card key={p.slug}>
+            <h3 style={{ margin: 0 }}>{p.title}</h3>
+            <div style={{ marginTop: 8 }}>
+              <button onClick={() => nav(`/program/${p.slug}`)} style={btn}>Learn more</button>
+              <button onClick={() => nav(`/inquire?program=${encodeURIComponent(p.title)}`)} style={{ ...btn, marginLeft: 8 }}>Request proposal</button>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  );
+}
+
+function ProgramDetail({ slug, nav }) {
+  return (
+    <Container>
+      <a href="#/programs" style={{ textDecoration: "none" }}>← All programs</a>
+      <h2 style={{ fontSize: 28, margin: "12px 0" }}>{slug.replace(/^\w/, c => c.toUpperCase())} program</h2>
+      <p>Overview coming soon. Use “Request proposal” to start a conversation.</p>
+      <button onClick={() => nav(`/inquire?program=${slug}`)} style={btn}>Request proposal</button>
+    </Container>
+  );
+}
+
+function Contact() {
+  return (
+    <Container>
+      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Contact</h2>
+      <Card>
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/?thanks=1">
+          <input type="hidden" name="form-name" value="contact" />
+          <p style={{ display: "none" }}><label>Don’t fill this: <input name="bot-field" /></label></p>
+          <p><input name="name" placeholder="Full name" required /></p>
+          <p><input name="email" type="email" placeholder="Email" required /></p>
+          <p><textarea name="message" placeholder="How can we help?" rows="5" required /></p>
+          <button type="submit" style={btn}>Send</button>
+        </form>
+      </Card>
+      {showThanksFromSearch() && <ThanksBanner />}
+    </Container>
+  );
+}
+
+function Inquire() {
+  const params = getQueryFromHash();
+  const program = params.get("program") || "";
+  const thanks = params.get("thanks") === "1";
+  return (
+    <Container>
+      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Request a Proposal</h2>
+      <Card>
+        <form name="program-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/#/inquire?thanks=1">
+          <input type="hidden" name="form-name" value="program-inquiry" />
+          <p style={{ display: "none" }}><label>Don’t fill this: <input name="bot-field" /></label></p>
+          <p><input name="organization" placeholder="Organization" required /></p>
+          <p><input name="name" placeholder="Your name" required /></p>
+          <p><input name="email" type="email" placeholder="Email" required /></p>
+          <p><textarea name="needs" placeholder="Tell us about your goals" rows="5" required /></p>
+          <p><input name="program" defaultValue={program} placeholder="Program of interest" /></p>
+          <button type="submit" style={btn}>Submit</button>
+        </form>
+      </Card>
+      {thanks && <ThanksBanner text="Thanks—your request was sent. We’ll contact you shortly." />}
+    </Container>
+  );
+}
+
+/* ---------- Shared bits ---------- */
+const btn = {
+  background: "#0ea5a4",
+  color: "#fff",
+  border: 0,
+  padding: "10px 14px",
+  borderRadius: 999,
+  cursor: "pointer"
+};
+
+function Header({ nav }) {
   const items = [
     ["/", "Home"],
     ["/programs", "Programs"],
-    ["/testimonials", "Testimonials"],
-    ["/gallery", "Gallery"],
-    ["/shop", "Shop"],
-    ["/contact", "Contact"], // no "#" here; router strips it
+    ["/inquire", "Request proposal"],
   ];
   return (
-    <header className="bg-teal-600 text-white">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-4">
-        <button onClick={() => nav("/")} className="flex items-center gap-3">
-          <img src="/logo.png" alt="I LIKE ME logo" className="h-10 w-10 rounded" />
-          <span className="text-2xl font-bold">I LIKE ME</span>
-        </button>
-        <nav className="ml-auto flex flex-wrap items-center gap-2">
-          {items.map(([to, label]) => (
-            <button
-              key={to}
-              onClick={() => nav(to)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                path === to ? "bg-white text-teal-700" : "bg-white/10 hover:bg-white/20"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-          <a
-            href="https://calendly.com/ilikeme"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-full text-sm font-semibold bg-orange-500 hover:bg-orange-600"
-          >
-            Book a Call
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
-/* ---------- Home ---------- */
-function Home() {
-  return (
-    <Section id="home" title="Welcome to I LIKE ME" intro="Healing shame, building resilient youth and families.">
-      <div className="rounded-2xl overflow-hidden border bg-white">
-        <img
-          src="/images/hero.png"
-          alt="Youth empowerment"
-          className="w-full h-80 object-cover"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1600&q=60";
-          }}
-        />
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Programs data ---------- */
-const PROGRAMS = [
-  {
-    slug: "youth",
-    title: "I LIKE ME Youth Program",
-    blurb: "Self-image, self-trust, and resilience to trauma and ACEs.",
-    long:
-      "A strengths-based curriculum that helps young people reframe trauma into resilience. Through interactive activities, journaling, and peer dialogue, participants learn to recognize adverse experiences while building self-esteem, emotional literacy, and healthy coping strategies. Centered on the Six Pillars.",
-    img: "/images/ylp.png",
-  },
-  {
-    slug: "bedside",
-    title: "Bedside Intervention",
-    blurb: "Reduce recidivism; catalyze growth during vulnerable moments.",
-    long:
-      "A hospital- and detention-based intervention that meets individuals at moments of crisis. Facilitators provide trauma-informed conversation, reflective exercises, and linkages to aftercare, turning destabilizing events into entry points for growth.",
-    img: "/images/bedside.png",
-  },
-  {
-    slug: "ipv",
-    title: "Intimate Violence Prevention (IVP)",
-    blurb: "Trauma-informed care and healthy relationships.",
-    long:
-      "Break cycles of harm via skills for self-respect, boundary setting, and healthy relationships. Grounded in trauma-informed care, IVP blends education with reflective dialogue to reduce IPV and restore dignity.",
-    img: "/images/ivp.png",
-  },
-  {
-    slug: "lgbtq",
-    title: "LGBTQ Empowerment",
-    blurb: "Affirming supports for self-acceptance and resilience.",
-    long:
-      "A safe, affirming space for LGBTQ youth to embrace identity, strengthen resilience, and find community. Integrates self-acceptance practices and peer support to build belonging and confidence.",
-    img: "/images/lgbtq.png",
-  },
-  {
-    slug: "staff",
-    title: "Staff & Administrator Curriculum",
-    blurb: "Equip adults to reinforce the Six Pillars.",
-    long:
-      "Training for educators and youth-serving professionals. Model empathy, support healing, and enforce accountability that reinforces dignity. Strategies for classroom management, family engagement, and aligned leadership.",
-    img: "/images/staff.png",
-  },
-  {
-    slug: "reentry",
-    title: "Reentry Program",
-    blurb: "Support justice-involved youth in successful transitions.",
-    long:
-      "Accompanies youth returning from detention. Combines reentry planning, mentoring, and trauma recovery supports. Integrates the Six Pillars with workforce readiness and community engagement to reduce recidivism.",
-    img: "/images/reentry.png",
-  },
-];
-const PROGRAMS_MAP = Object.fromEntries(PROGRAMS.map((p) => [p.slug, p]));
-
-/* ---------- Programs grid ---------- */
-function Programs({ nav }) {
-  return (
-    <Section id="programs" title="Curriculum Pathways" intro="For schools, hospitals, churches, and community orgs.">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {PROGRAMS.map((p) => (
-          <div key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
-            <img
-              src={p.img}
-              alt={p.title}
-              className="h-48 w-full object-cover"
-              onError={(e) => {
-                e.currentTarget.src = "https://picsum.photos/seed/ilmprog/800/600";
-              }}
-            />
-            <div className="p-5">
-              <h3 className="text-lg font-bold text-teal-700">{p.title}</h3>
-              <p className="text-slate-600 text-sm mt-1">{p.blurb}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <button
-                  onClick={() => nav(`/program/${p.slug}`)}
-                  className="rounded-full px-4 py-2 text-sm font-semibold border border-teal-600 text-teal-700"
-                >
-                  Learn more
-                </button>
-                <button
-                  onClick={() => nav(`/inquire?program=${p.slug}`)}
-                  className="rounded-full px-4 py-2 text-sm font-semibold bg-orange-500 text-white"
-                >
-                  Request proposal
-                </button>
-                <a
-                  href="https://calendly.com/ilikeme"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full px-4 py-2 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Book a call
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Program Detail ---------- */
-function ProgramDetail({ slug, nav }) {
-  const clean = (slug || "").split("?")[0];
-  const p = PROGRAMS_MAP[clean];
-  if (!p) {
-    return (
-      <Section id="program-missing" title="Program not found">
-        <button onClick={() => nav("/programs")} className="rounded-full px-4 py-2 border">
-          Back to Programs
-        </button>
-      </Section>
-    );
-  }
-  return (
-    <Section id={`program-${clean}`} title={p.title} intro={p.blurb}>
-      <div className="grid md:grid-cols-2 gap-6">
-        <img
-          src={p.img}
-          alt={p.title}
-          className="w-full h-72 object-cover rounded-2xl border"
-          onError={(e) => {
-            e.currentTarget.src = "https://picsum.photos/seed/ilmprogdetail/1000/700";
-          }}
-        />
-        <div className="rounded-2xl border bg-white p-6">
-          <p className="text-slate-700">{p.long}</p>
-          <ul className="mt-4 list-disc pl-5 text-slate-700 space-y-1">
-            <li>Six Pillars integration</li>
-            <li>Facilitator training and toolkits</li>
-            <li>Pre/post measures and reporting</li>
-          </ul>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <button
-              onClick={() => nav(`/inquire?program=${clean}`)}
-              className="rounded-full px-5 py-3 bg-orange-500 text-white font-semibold"
-            >
-              Request proposal
-            </button>
-            <a
-              href="https://calendly.com/ilikeme"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full px-5 py-3 bg-teal-600 text-white font-semibold"
-            >
-              Book a call
-            </a>
-            <button onClick={() => nav("/programs")} className="rounded-full px-5 py-3 border">
-              Back
-            </button>
-          </div>
+    <div style={{ background: "#0ea5a4", color: "#fff" }}>
+      <Container>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
+          <strong>I LIKE ME</strong>
+          <nav style={{ display: "flex", gap: 8 }}>
+            {items.map(([to, label]) => (
+              <button key={to} onClick={() => nav(to)} style={{ ...btn, background: "rgba(255,255,255,0.15)" }}>
+                {label}
+              </button>
+            ))}
+            <a href="#/contact" style={{ ...btn, background: "#ff6a13" }}>Contact</a>
+          </nav>
         </div>
-      </div>
-    </Section>
+      </Container>
+    </div>
   );
 }
 
+function Footer() {
+  return (
+    <div style={{ background: "#f3f4f6", marginTop: 24 }}>
+      <Container>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
+          <span>© {new Date().getFullYear()} I LIKE ME</span>
+          <a href="#/contact" style={{ textDecoration: "none" }}>Contact</a>
+        </div>
+      </Container>
+    </div>
+  );
+}
+
+function ThanksBanner({ text = "Thanks—your message was sent." }) {
+  return (
+    <div style={{ marginTop: 12, padding: 12, background: "#ecfdf5", border: "1px solid #34d399", borderRadius: 12, color: "#065f46" }}>
+      {text}
+    </div>
+  );
+}
+
+/* helpers for hash query */
 function getQueryFromHash() {
   const h = window.location.hash || "";
   const q = h.includes("?") ? h.split("?")[1] : "";
   return new URLSearchParams(q);
 }
-function Inquire() {
-  const params = typeof window !== "undefined" ? getQueryFromHash() : new URLSearchParams();
-  const thanks = params.get("thanks") === "1";
-  // ...
-}
-    <Section id="inquire" title="Request a Proposal" intro={progTitle}>
-      <form
-        name="program-inquiry"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        action="/#/inquire?thanks=1"
-        className="rounded-2xl border bg-white p-6 max-w-xl mx-auto"
-      >
-        <input type="hidden" name="form-name" value="program-inquiry" />
-        <input type="hidden" name="program" value={progTitle} />
-        <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
-
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Organization</span>
-          <input className="rounded-xl border px-3 py-2" name="organization" required />
-        </label>
-
-        <div className="grid md:grid-cols-2 gap-3">
-          <label className="grid gap-1">
-            <span className="text-sm font-medium">Contact name</span>
-            <input className="rounded-xl border px-3 py-2" name="name" required />
-          </label>
-          <label className="grid gap-1">
-            <span className="text-sm font-medium">Email</span>
-            <input className="rounded-xl border px-3 py-2" type="email" name="email" required />
-          </label>
-        </div>
-
-        <label className="grid gap-1 mt-3">
-          <span className="text-sm font-medium">Phone</span>
-          <input className="rounded-xl border px-3 py-2" type="tel" name="phone" />
-        </label>
-
-        <label className="grid gap-1 mt-3">
-          <span className="text-sm font-medium">What outcomes are you seeking?</span>
-          <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" />
-        </label>
-
-        <label className="mt-3 flex items-center gap-2 text-sm">
-          <input type="checkbox" name="consent" required />
-          I agree to be contacted about this proposal.
-        </label>
-
-        <button className="mt-4 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">
-          Send request
-        </button>
-
-        {thanks && (
-          <div className="mt-6 rounded-xl border p-4 text-sm text-green-700 bg-green-50">
-            Thanks—your request was sent. We’ll contact you shortly.
-          </div>
-        )}
-      </form>
-
-      {/* Calendly embed (kept external buttons elsewhere) */}
-      <div
-        className="calendly-inline-widget mt-10"
-        data-url="https://calendly.com/ilikeme"
-        style={{ minWidth: "320px", height: "700px" }}
-      />
-    </Section>
-
-/* ---------- Testimonials ---------- */
-const TESTIMONIALS = [
-  { quote: "Students named their worth and repaired relationships.", name: "Assistant Principal", org: "Urban HS" },
-  { quote: "The bedside intervention changed my son’s trajectory.", name: "Parent", org: "Children’s Hospital" },
-  { quote: "Staff now share language for empathy and accountability.", name: "Program Director", org: "Community Center" },
-];
-function Testimonials() {
-  return (
-    <Section id="testimonials" title="Testimonials" intro="Real outcomes in real communities.">
-      <div className="grid md:grid-cols-3 gap-6">
-        {TESTIMONIALS.map((t, idx) => (
-          <div key={idx} className="rounded-2xl border bg-white p-6">
-            <p className="font-semibold">“{t.quote}”</p>
-            <div className="mt-3 text-sm text-slate-600">— {t.name}{t.org ? `, ${t.org}` : ""}</div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
+function showThanksFromSearch() {
+  // for Contact action="/?thanks=1"
+  return new URLSearchParams(window.location.search).get("thanks") === "1";
 }
 
-/* ---------- Gallery ---------- */
-function Gallery() {
-  const pics = ["/images/g1.jpg","/images/g2.jpg","/images/g3.jpg","/images/g4.jpg","/images/g5.jpg","/images/g6.jpg"];
-  return (
-    <Section id="gallery" title="Gallery" intro="Moments of joy, learning, and courage.">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {pics.map((p, idx) => (
-          <img
-            key={idx}
-            src={p}
-            alt={`Gallery ${idx + 1}`}
-            className="aspect-[4/3] w-full object-cover rounded-xl border bg-white"
-            onError={(e) => { e.currentTarget.src = `https://picsum.photos/seed/ilm${idx}/600/450`; }}
-          />
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Shop (Stripe links) ---------- */
-const PRODUCTS = [
-  { id: "ilm-workbook", name: "I LIKE ME Workbook", price: 25, img: "/images/shop-ILMwrkbk.png",            link: "https://buy.stripe.com/cNi9AS0Zg7Q28eK05I48000" },
-  { id: "boop-book",   name: "Born Out of Pain — Memoir", price: 20, img: "/images/shop-BOOP-book.png",      link: "https://buy.stripe.com/aFa3cueQ63zM8eKf0C48001" },
-  { id: "ilm-hat",     name: "I LIKE ME Hat",             price: 20, img: "/images/shop-blk-n-white-hat.png", link: "https://buy.stripe.com/bJebJ0fUa1rE2Uq7ya48005" },
-  { id: "ilm-mug",     name: "I LIKE ME Mug",             price: 15, img: "/images/shop-ILMmug.png",          link: "https://buy.stripe.com/dRmcN4eQ69YaamS3hU48004" },
-  { id: "ilm-tee",     name: "I LIKE ME T-Shirt",         price: 15, img: "/images/shop-blk-tee.png",         link: "https://buy.stripe.com/aFaeVcdM2c6i1QmdWy48002" },
-  { id: "ilm-journal", name: "I LIKE ME Affirmational Journal", price: 12, img: "/images/shop-ILMJournal.png", link: "https://buy.stripe.com/00w9ASdM2c6ibqWg4G48003" },
-];
-function Shop() {
-  return (
-    <Section id="shop" title="Shop Merchandise" intro="Support the mission with branded gear.">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {PRODUCTS.map((p) => (
-          <div key={p.id} className="rounded-2xl border bg-white overflow-hidden">
-            <img
-              src={p.img}
-              alt={p.name}
-              className="h-48 w-full object-cover"
-              onError={(e) => { e.currentTarget.src = "https://picsum.photos/seed/ilmshop/800/600"; }}
-            />
-            <div className="p-5">
-              <h3 className="text-lg font-bold text-teal-700">{p.name}</h3>
-              <p className="text-slate-600 text-sm">${p.price}</p>
-              <a
-                href={p.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-block rounded-full px-5 py-3 text-white font-semibold bg-orange-500"
-              >
-                Buy with Stripe
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------- Contact ---------- */
-function Contact() {
-  return (
-    <Section id="contact" title="Contact" intro="Let’s connect on alignment, pilots, and next steps.">
-      <form
-        name="contact"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        action="/?thanks=1"
-        className="rounded-2xl border bg-white p-6 max-w-xl mx-auto"
-      >
-        <input type="hidden" name="form-name" value="contact" />
-        <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
-
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Full name</span>
-          <input className="rounded-xl border px-3 py-2" name="name" required />
-        </label>
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Email</span>
-          <input className="rounded-xl border px-3 py-2" type="email" name="email" required />
-        </label>
-        <label className="grid gap-1 mb-3">
-          <span className="text-sm font-medium">Message</span>
-          <textarea className="rounded-xl border px-3 py-2" rows="5" name="message" required />
-        </label>
-
-        <button className="mt-3 rounded-full px-5 py-3 text-white font-semibold bg-orange-500">Send</button>
-      </form>
-    </Section>
-  );
-}
-
-/* ---------- App (default export) ---------- */
+/* ---------- App ---------- */
 export default function App() {
   const [path, nav] = useHashRoute();
-
   return (
-    <div className="min-h-screen bg-white">
-      <Header path={path} nav={nav} />
-      <main>
-        {path === "/" && <Home />}
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#fafafa" }}>
+      <Header nav={nav} />
+      <main style={{ flex: 1 }}>
+        {path === "/" && <Home nav={nav} />}
         {path === "/programs" && <Programs nav={nav} />}
-        {path.startsWith("/program/") && <ProgramDetail slug={path.split("?")[0].split("/")[2]} nav={nav} />}
+        {path.startsWith("/program/") && <ProgramDetail slug={path.split("/")[2]} nav={nav} />}
         {path.startsWith("/inquire") && <Inquire />}
-        {path === "/testimonials" && <Testimonials />}
-        {path === "/gallery" && <Gallery />}
-        {path === "/shop" && <Shop />}
         {path === "/contact" && <Contact />}
       </main>
-      <footer className="bg-slate-100 py-10 mt-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="mb-4">© {new Date().getFullYear()} I LIKE ME. All rights reserved.</p>
-          <div className="flex flex-wrap justify-center gap-6">
-            <a href="#/contact" className="px-4 py-2 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700">
-              Contact
-            </a>
-            <a
-              href="https://calendly.com/ilikeme"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600"
-            >
-              Schedule a Call
-            </a>
-            <a href="#/inquire" className="px-4 py-2 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700">
-              Request Proposal
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
