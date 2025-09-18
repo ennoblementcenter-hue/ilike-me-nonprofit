@@ -1,15 +1,23 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 /* ---------- Tiny layout helpers ---------- */
-function Section({ id, title, intro, children }) {
+export default function Header() {
   return (
-    <section id={id} className="max-w-6xl mx-auto px-4 py-12">
-      {title && <h2 className="text-3xl font-bold text-slate-900">{title}</h2>}
-      {intro && <p className="mt-2 text-slate-600">{intro}</p>}
-      <div className={title || intro ? "mt-8" : ""}>{children}</div>
-    </section>
+    <header className="flex justify-between items-center p-4 bg-teal-600 text-white">
+      {/* Logo / Site Title */}
+      <h1 className="text-xl font-bold">I LIKE ME</h1>
+
+      {/* Navigation */}
+      <nav className="space-x-6">
+        <a href="#/" className="hover:underline">Home</a>
+        <a href="#/programs" className="hover:underline">Programs</a>
+        <a href="#/inquire" className="hover:underline">Inquire</a>
+        <a href="#/contact" className="hover:underline">Contact</a>
+      </nav>
+    </header>
   );
 }
+
 
 function Header({ nav }) {
   return (
