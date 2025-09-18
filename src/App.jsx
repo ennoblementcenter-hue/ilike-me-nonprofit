@@ -1,12 +1,41 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-/* ---------- Tiny UI helpers ---------- */
-function Container({ children }) {
-  return <div style={{ maxWidth: 1040, margin: "0 auto", padding: "24px" }}>{children}</div>;
+/* ---------- Tiny layout helpers ---------- */
+function Section({ id, title, intro, children }) {
+  return (
+    <section id={id} className="max-w-6xl mx-auto px-4 py-12">
+      {title && <h2 className="text-3xl font-bold text-slate-900">{title}</h2>}
+      {intro && <p className="mt-2 text-slate-600">{intro}</p>}
+      <div className={title || intro ? "mt-8" : ""}>{children}</div>
+    </section>
+  );
 }
-function Card({ children }) {
-  return <div style={{ border: "1px solid #e5e7eb", borderRadius: 16, padding: 16, background: "#fff" }}>{children}</div>;
+
+function Header({ nav }) {
+  return (
+    <header className="border-b bg-white/80 backdrop-blur sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <a href="#/" className="flex items-center gap-2">
+          <img src="/logo.png" alt="I LIKE ME" className="h-8 w-8" />
+          <span className="font-bold">I LIKE ME</span>
+        </a>
+        <nav className="flex gap-4 text-sm">
+          <a href="#/programs" className="hover:text-teal-700">Programs</a>
+          <a href="#/inquire" className="hover:text-teal-700">Inquire</a>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="mt-16 border-t">
+      <div className="max-w-6xl mx-auto px-4 py-10 text-sm text-slate-600">
+        © {new Date().getFullYear()} I LIKE ME. All rights reserved.
+      </div>
+    </footer>
+  );
 }
 
 /* ---------- Minimal hash router ---------- */
@@ -22,181 +51,349 @@ function useHashRoute() {
   return [path, nav];
 }
 
+/* ---------- Program data ---------- */
+const PROGRAMS = [
+  {
+    slug: "youth",
+    title: "I LIKE ME Youth Program",
+    image: "/images/program-youth.jpg",
+    summary:
+      "Builds self-image, trust, and resilience to trauma and Adverse Childhood Experiences (ACEs) using the Six Pillars.",
+    audience: "Middle school, high school, community youth cohorts.",
+    outcomes: [
+      "Improved self-worth and self-talk",
+      "Coping skills for stress and triggers",
+      "Peer trust and prosocial behavior",
+    ],
+  },
+  {
+    slug: "bedside",
+    title: "I LIKE ME Bedside Intervention",
+    image: "/images/program-bedside.jpg",
+    summary:
+      "Brief, trauma-informed intervention delivered at critical moments to reduce recidivism and spark personal growth.",
+    audience: "ER discharges, crisis recovery, inpatient transitions.",
+    outcomes: [
+      "Lower re-injury and recidivism risk",
+      "Immediate grounding plan",
+      "Warm handoff to ongoing supports",
+    ],
+  },
+  {
+    slug: "ipv",
+    title: "I LIKE ME Intimate Violence Prevention",
+    image: "/images/program-ipv.jpg",
+    summary:
+      "Centers self-respect, boundaries, and healthy relationship dynamics through practical, trauma-aware tools.",
+    audience: "Teens, young adults, campus groups, community orgs.",
+    outcomes: [
+      "Boundary setting and consent fluency",
+      "Early warning sign recognition",
+      "Help-seeking confidence",
+    ],
+  },
+  {
+    slug: "lgbtq",
+    title: "I LIKE ME LGBTQ Empowerment",
+    image: "/images/program-lgbtq.jpg",
+    summary:
+      "Affirming spaces for self-acceptance, identity safety, and emotional resilience tailored to LGBTQ youth.",
+    audience: "LGBTQ youth groups and Gay-Straight Alliances.",
+    outcomes: [
+      "Increased belonging and self-acceptance",
+      "Protective coping skills",
+      "Allies and resource mapping",
+    ],
+  },
+  {
+    slug: "staff",
+    title: "I LIKE ME Staff & Administrator Curriculum",
+    image: "/images/program-staff.jpg",
+    summary:
+      "Equips adults who serve youth with empathy, de-escalation, and Six Pillars aligned supports.",
+    audience: "Teachers, counselors, site leaders, youth workers.",
+    outcomes: [
+      "Trauma-aware responses",
+      "De-escalation routines",
+      "Classroom culture aligned to the Six Pillars",
+    ],
+  },
+  {
+    slug: "reentry",
+    title: "I LIKE ME Reentry Program",
+    image: "/images/program-reentry.jpg",
+    summary:
+      "Stabilizes the first 90 days post-release with identity repair, goal scaffolds, and community accountability.",
+    audience: "Returning citizens, reentry navigators, partner orgs.",
+    outcomes: [
+      "Milestone-based action plan",
+      "Mentor and services braid-in",
+      "Reduced returns to custody",
+    ],
+  },
+];
+
 /* ---------- Pages ---------- */
-function Home({ nav }) {
+function Home() {
   return (
-    <Container>
-      <h1 style={{ fontSize: 32, marginBottom: 12 }}>I LIKE ME</h1>
-      <p>Healing shame and building resilient youth and families.</p>
-      <div style={{ marginTop: 16 }}>
-        <button onClick={() => nav("/programs")} style={btn}>Programs</button>
-        <a href="#/contact" style={{ ...btn, marginLeft: 8 }}>Contact</a>
-      </div>
-    </Container>
+    <>
+      <Section>
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h1 className="text-4xl font-extrabold leading-tight">
+              Healing shame. Building resilient youth and families.
+            </h1>
+            <p className="mt-4 text-slate-600">
+              The I LIKE ME Curriculum turns the Six Pillars into daily habits
+              that change how young people see themselves and show up for each other.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <a
+                href="#/programs"
+                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Explore Programs
+              </a>
+              <a
+                href="#/inquire"
+                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+              >
+                Request a Proposal
+              </a>
+            </div>
+          </div>
+          <img
+            src="/images/hero-youth.jpg"
+            alt="Youth empowerment"
+            className="rounded-2xl w-full object-cover"
+          />
+        </div>
+      </Section>
+    </>
   );
 }
 
 function Programs({ nav }) {
-  const list = [
-    { slug: "youth", title: "Youth Program" },
-    { slug: "bedside", title: "Bedside Intervention" },
-    { slug: "ipv", title: "Intimate Violence Prevention" },
-    { slug: "lgbtq", title: "LGBTQ Empowerment" },
-    { slug: "staff", title: "Staff & Administrator Curriculum" },
-    { slug: "reentry", title: "Reentry Program" },
-  ];
   return (
-    <Container>
-      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Programs</h2>
-      <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" }}>
-        {list.map(p => (
-          <Card key={p.slug}>
-            <h3 style={{ margin: 0 }}>{p.title}</h3>
-            <div style={{ marginTop: 8 }}>
-              <button onClick={() => nav(`/program/${p.slug}`)} style={btn}>Learn more</button>
-              <button onClick={() => nav(`/inquire?program=${encodeURIComponent(p.title)}`)} style={{ ...btn, marginLeft: 8 }}>Request proposal</button>
+    <Section
+      id="programs"
+      title="Programs"
+      intro="Each pathway uses the Six Pillars to fit your context."
+    >
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROGRAMS.map((p) => (
+          <article key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
+            <img
+              src={p.image}
+              alt={p.title}
+              className="h-40 w-full object-cover"
+              loading="lazy"
+            />
+            <div className="p-5">
+              <h3 className="font-semibold text-lg">{p.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 line-clamp-3">{p.summary}</p>
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={() => nav(`/program/${p.slug}`)}
+                  className="px-4 py-2 rounded-full bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700"
+                >
+                  View details
+                </button>
+                <a
+                  href={`#/inquire?program=${encodeURIComponent(p.slug)}`}
+                  className="px-4 py-2 rounded-full border text-sm font-semibold hover:bg-slate-50"
+                >
+                  Request proposal
+                </a>
+              </div>
             </div>
-          </Card>
+          </article>
         ))}
       </div>
-    </Container>
+    </Section>
   );
 }
 
 function ProgramDetail({ slug, nav }) {
-  return (
-    <Container>
-      <a href="#/programs" style={{ textDecoration: "none" }}>← All programs</a>
-      <h2 style={{ fontSize: 28, margin: "12px 0" }}>{slug.replace(/^\w/, c => c.toUpperCase())} program</h2>
-      <p>Overview coming soon. Use “Request proposal” to start a conversation.</p>
-      <button onClick={() => nav(`/inquire?program=${slug}`)} style={btn}>Request proposal</button>
-    </Container>
+  const program = useMemo(
+    () => PROGRAMS.find((p) => p.slug === slug),
+    [slug]
   );
-}
 
-function Contact() {
+  if (!program) {
+    return (
+      <Section>
+        <p className="text-slate-600">Program not found.</p>
+        <div className="mt-4">
+          <a href="#/programs" className="text-teal-700 underline">Back to programs</a>
+        </div>
+      </Section>
+    );
+  }
+
   return (
-    <Container>
-      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Contact</h2>
-      <Card>
-        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/?thanks=1">
-          <input type="hidden" name="form-name" value="contact" />
-          <p style={{ display: "none" }}><label>Don’t fill this: <input name="bot-field" /></label></p>
-          <p><input name="name" placeholder="Full name" required /></p>
-          <p><input name="email" type="email" placeholder="Email" required /></p>
-          <p><textarea name="message" placeholder="How can we help?" rows="5" required /></p>
-          <button type="submit" style={btn}>Send</button>
-        </form>
-      </Card>
-      {showThanksFromSearch() && <ThanksBanner />}
-    </Container>
+    <>
+      <Section>
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <img
+            src={program.image}
+            alt={program.title}
+            className="rounded-2xl w-full object-cover"
+          />
+          <div>
+            <h1 className="text-3xl font-bold">{program.title}</h1>
+            <p className="mt-3 text-slate-700">{program.summary}</p>
+            <div className="mt-5">
+              <h4 className="font-semibold">Audience</h4>
+              <p className="text-slate-700">{program.audience}</p>
+            </div>
+            <div className="mt-5">
+              <h4 className="font-semibold">Core outcomes</h4>
+              <ul className="list-disc pl-6 text-slate-700">
+                {program.outcomes.map((o) => (
+                  <li key={o}>{o}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <a
+                href={`#/inquire?program=${encodeURIComponent(program.slug)}`}
+                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Request proposal
+              </a>
+              <button
+                onClick={() => nav("/programs")}
+                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+              >
+                Back to programs
+              </button>
+            </div>
+          </div>
+        </div>
+      </Section>
+    </>
   );
 }
 
 function Inquire() {
-  const params = getQueryFromHash();
-  const program = params.get("program") || "";
-  const thanks = params.get("thanks") === "1";
-  return (
-    <Container>
-      <h2 style={{ fontSize: 28, marginBottom: 8 }}>Request a Proposal</h2>
-      <Card>
-        <form name="program-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/#/inquire?thanks=1">
-          <input type="hidden" name="form-name" value="program-inquiry" />
-          <p style={{ display: "none" }}><label>Don’t fill this: <input name="bot-field" /></label></p>
-          <p><input name="organization" placeholder="Organization" required /></p>
-          <p><input name="name" placeholder="Your name" required /></p>
-          <p><input name="email" type="email" placeholder="Email" required /></p>
-          <p><textarea name="needs" placeholder="Tell us about your goals" rows="5" required /></p>
-          <p><input name="program" defaultValue={program} placeholder="Program of interest" /></p>
-          <button type="submit" style={btn}>Submit</button>
-        </form>
-      </Card>
-      {thanks && <ThanksBanner text="Thanks—your request was sent. We’ll contact you shortly." />}
-    </Container>
-  );
-}
+  // read ?program=… to prefill hidden field
+  const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
+  const prefill = params.get("program") || "";
 
-/* ---------- Shared bits ---------- */
-const btn = {
-  background: "#0ea5a4",
-  color: "#fff",
-  border: 0,
-  padding: "10px 14px",
-  borderRadius: 999,
-  cursor: "pointer"
-};
+  const thanked =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("thanks") === "1";
 
-function Header({ nav }) {
-  const items = [
-    ["/", "Home"],
-    ["/programs", "Programs"],
-    ["/inquire", "Request proposal"],
-  ];
   return (
-    <div style={{ background: "#0ea5a4", color: "#fff" }}>
-      <Container>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
-          <strong>I LIKE ME</strong>
-          <nav style={{ display: "flex", gap: 8 }}>
-            {items.map(([to, label]) => (
-              <button key={to} onClick={() => nav(to)} style={{ ...btn, background: "rgba(255,255,255,0.15)" }}>
-                {label}
-              </button>
+    <Section
+      id="inquire"
+      title="Request a Proposal"
+      intro="Tell us what success looks like. We’ll reply with scope, timeline, and next steps."
+    >
+      {thanked && (
+        <div className="mb-6 rounded-xl border p-4 text-green-700 bg-green-50">
+          Thanks—your request was sent. We’ll contact you shortly.
+        </div>
+      )}
+
+      <form
+        name="program-inquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/?thanks=1"
+        className="rounded-2xl border bg-white p-6 grid gap-4 max-w-2xl"
+      >
+        {/* Netlify form fields */}
+        <input type="hidden" name="form-name" value="program-inquiry" />
+        <p className="hidden">
+          <label>
+            Don’t fill this: <input name="bot-field" />
+          </label>
+        </p>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Organization</span>
+          <input
+            className="rounded-xl border px-3 py-2"
+            name="organization"
+            required
+          />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Your name</span>
+          <input className="rounded-xl border px-3 py-2" name="name" required />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Email</span>
+          <input
+            className="rounded-xl border px-3 py-2"
+            type="email"
+            name="email"
+            required
+          />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Which program?</span>
+          <select
+            name="program"
+            defaultValue={prefill}
+            className="rounded-xl border px-3 py-2"
+            required
+          >
+            <option value="" disabled>
+              Select a program…
+            </option>
+            {PROGRAMS.map((p) => (
+              <option key={p.slug} value={p.slug}>
+                {p.title}
+              </option>
             ))}
-            <a href="#/contact" style={{ ...btn, background: "#ff6a13" }}>Contact</a>
-          </nav>
-        </div>
-      </Container>
-    </div>
-  );
-}
+          </select>
+        </label>
 
-function Footer() {
-  return (
-    <div style={{ background: "#f3f4f6", marginTop: 24 }}>
-      <Container>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
-          <span>© {new Date().getFullYear()} I LIKE ME</span>
-          <a href="#/contact" style={{ textDecoration: "none" }}>Contact</a>
-        </div>
-      </Container>
-    </div>
-  );
-}
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">What outcomes matter most?</span>
+          <textarea
+            className="rounded-xl border px-3 py-2"
+            rows="5"
+            name="goals"
+            placeholder="Share context, timelines, and success criteria…"
+            required
+          />
+        </label>
 
-function ThanksBanner({ text = "Thanks—your message was sent." }) {
-  return (
-    <div style={{ marginTop: 12, padding: 12, background: "#ecfdf5", border: "1px solid #34d399", borderRadius: 12, color: "#065f46" }}>
-      {text}
-    </div>
+        <button
+          className="mt-2 rounded-full px-5 py-3 text-white font-semibold"
+          style={{ backgroundColor: "#0f766e" }}
+        >
+          Send request
+        </button>
+      </form>
+    </Section>
   );
-}
-
-/* helpers for hash query */
-function getQueryFromHash() {
-  const h = window.location.hash || "";
-  const q = h.includes("?") ? h.split("?")[1] : "";
-  return new URLSearchParams(q);
-}
-function showThanksFromSearch() {
-  // for Contact action="/?thanks=1"
-  return new URLSearchParams(window.location.search).get("thanks") === "1";
 }
 
 /* ---------- App ---------- */
 export default function App() {
   const [path, nav] = useHashRoute();
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#fafafa" }}>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header nav={nav} />
-      <main style={{ flex: 1 }}>
-        {path === "/" && <Home nav={nav} />}
-        {path === "/programs" && <Programs nav={nav} />}
-        {path.startsWith("/program/") && <ProgramDetail slug={path.split("/")[2]} nav={nav} />}
-        {path.startsWith("/inquire") && <Inquire />}
-        {path === "/contact" && <Contact />}
-      </main>
+
+      {/* Routes */}
+      {path === "/" && <Home />}
+      {path === "/programs" && <Programs nav={nav} />}
+      {path.startsWith("/program/") && (
+        <ProgramDetail slug={path.split("/")[2]} nav={nav} />
+      )}
+      {path.startsWith("/inquire") && <Inquire />}
+
       <Footer />
     </div>
   );
