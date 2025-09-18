@@ -19,23 +19,6 @@ export default function Header() {
 }
 
 
-function Header({ nav }) {
-  return (
-    <header className="border-b bg-white/80 backdrop-blur sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <a href="#/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="I LIKE ME" className="h-8 w-8" />
-          <span className="font-bold">I LIKE ME</span>
-        </a>
-        <nav className="flex gap-4 text-sm">
-          <a href="#/programs" className="hover:text-teal-700">Programs</a>
-          <a href="#/inquire" className="hover:text-teal-700">Inquire</a>
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 function Footer() {
   return (
     <footer className="mt-16 border-t">
