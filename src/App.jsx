@@ -10,9 +10,9 @@ function Header() {
       {/* Navigation */}
       <nav className="space-x-6">
         <a href="#/" className="hover:underline">Home</a>
-        <a href="#/Programs" className="hover:underline">Programs</a>
-        <a href="#/Inquire" className="hover:underline">Inquire</a>
-        <a href="#/Contact" className="hover:underline">Contact</a>
+        <a href="#/programs" className="hover:underline">Programs</a>
+        <a href="#/inquire" className="hover:underline">Inquire</a>
+        <a href="#/contact" className="hover:underline">Contact</a>
       </nav>
     </header>
   );
@@ -149,4 +149,254 @@ function Home() {
             </p>
             <div className="mt-6 flex gap-3">
               <a
-                href="#/
+                href="#/programs"
+                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Explore Programs
+              </a>
+              <a
+                href="#/inquire"
+                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+              >
+                Request a Proposal
+              </a>
+            </div>
+          </div>
+          <img
+            src="/images/hero-youth.jpg"
+            alt="Youth empowerment"
+            className="rounded-2xl w-full object-cover"
+          />
+        </div>
+      </Section>
+    </>
+  );
+}
+
+function Programs({ nav }) {
+  return (
+    <Section
+      id="programs"
+      title="Programs"
+      intro="Each pathway uses the Six Pillars to fit your context."
+    >
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROGRAMS.map((p) => (
+          <article key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
+            <img
+              src={p.image}
+              alt={p.title}
+              className="h-40 w-full object-cover"
+              loading="lazy"
+            />
+            <div className="p-5">
+              <h3 className="font-semibold text-lg">{p.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 line-clamp-3">{p.summary}</p>
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={() => nav(`/program/${p.slug}`)}
+                  className="px-4 py-2 rounded-full bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700"
+                >
+                  View details
+                </button>
+                <a
+                  href={`#/inquire?program=${encodeURIComponent(p.slug)}`}
+                  className="px-4 py-2 rounded-full border text-sm font-semibold hover:bg-slate-50"
+                >
+                  Request proposal
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function ProgramDetail({ slug, nav }) {
+  const program = useMemo(
+    () => PROGRAMS.find((p) => p.slug === slug),
+    [slug]
+  );
+
+  if (!program) {
+    return (
+      <Section>
+        <p className="text-slate-600">Program not found.</p>
+        <div className="mt-4">
+          <a href="#/programs" className="text-teal-700 underline">Back to programs</a>
+        </div>
+      </Section>
+    );
+  }
+
+  return (
+    <>
+      <Section>
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <img
+            src={program.image}
+            alt={program.title}
+            className="rounded-2xl w-full object-cover"
+          />
+          <div>
+            <h1 className="text-3xl font-bold">{program.title}</h1>
+            <p className="mt-3 text-slate-700">{program.summary}</p>
+            <div className="mt-5">
+              <h4 className="font-semibold">Audience</h4>
+              <p className="text-slate-700">{program.audience}</p>
+            </div>
+            <div className="mt-5">
+              <h4 className="font-semibold">Core outcomes</h4>
+              <ul className="list-disc pl-6 text-slate-700">
+                {program.outcomes.map((o) => (
+                  <li key={o}>{o}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-6 flex gap-3">
+              <a
+                href={`#/inquire?program=${encodeURIComponent(program.slug)}`}
+                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Request proposal
+              </a>
+              <button
+                onClick={() => nav("/programs")}
+                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+              >
+                Back to programs
+              </button>
+            </div>
+          </div>
+        </div>
+      </Section>
+    </>
+  );
+}
+
+function Inquire() {
+  // read ?program=… to prefill hidden field
+  const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
+  const prefill = params.get("program") || "";
+
+  const thanked =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("thanks") === "1";
+
+  return (
+    <Section
+      id="inquire"
+      title="Request a Proposal"
+      intro="Tell us what success looks like. We’ll reply with scope, timeline, and next steps."
+    >
+      {thanked && (
+        <div className="mb-6 rounded-xl border p-4 text-green-700 bg-green-50">
+          Thanks—your request was sent. We’ll contact you shortly.
+        </div>
+      )}
+
+      <form
+        name="program-inquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        action="/?thanks=1"
+        className="rounded-2xl border bg-white p-6 grid gap-4 max-w-2xl"
+      >
+        {/* Netlify form fields */}
+        <input type="hidden" name="form-name" value="program-inquiry" />
+        <p className="hidden">
+          <label>
+            Don’t fill this: <input name="bot-field" />
+          </label>
+        </p>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Organization</span>
+          <input
+            className="rounded-xl border px-3 py-2"
+            name="organization"
+            required
+          />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Your name</span>
+          <input className="rounded-xl border px-3 py-2" name="name" required />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Email</span>
+          <input
+            className="rounded-xl border px-3 py-2"
+            type="email"
+            name="email"
+            required
+          />
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">Which program?</span>
+          <select
+            name="program"
+            defaultValue={prefill}
+            className="rounded-xl border px-3 py-2"
+            required
+          >
+            <option value="" disabled>
+              Select a program…
+            </option>
+            {PROGRAMS.map((p) => (
+              <option key={p.slug} value={p.slug}>
+                {p.title}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="grid gap-1">
+          <span className="text-sm font-medium">What outcomes matter most?</span>
+          <textarea
+            className="rounded-xl border px-3 py-2"
+            rows="5"
+            name="goals"
+            placeholder="Share context, timelines, and success criteria…"
+            required
+          />
+        </label>
+
+        <button
+          className="mt-2 rounded-full px-5 py-3 text-white font-semibold"
+          style={{ backgroundColor: "#0f766e" }}
+        >
+          Send request
+        </button>
+      </form>
+    </Section>
+  );
+}
+
+/* ---------- App ---------- */
+function App() {
+  const [path, nav] = useHashRoute();
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <Header />
+
+      {/* Routes */}
+      {path === "/" && <Home />}
+      {path === "/programs" && <Programs nav={nav} />}
+      {path.startsWith("/program/") && (
+        <ProgramDetail slug={path.split("/")[2]} nav={nav} />
+      )}
+      {path.startsWith("/inquire") && <Inquire />}
+
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
