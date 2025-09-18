@@ -18,7 +18,6 @@ function Header() {
 }
 export default Header;
 
-
 function Footer() {
   return (
     <footer className="mt-16 border-t">
@@ -135,6 +134,8 @@ function Section({ id, title, intro, children }) {
   );
 }
 
+import Section from "../components/Section"; // make sure Section is imported
+
 function Home() {
   return (
     <>
@@ -150,13 +151,13 @@ function Home() {
             </p>
             <div className="mt-6 flex gap-3">
               <a
-                href="#/Programs"
+                href="#/programs"
                 className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
               >
                 Explore Programs
               </a>
               <a
-                href="#/Inquire"
+                href="#/inquire"
                 className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
               >
                 Request a Proposal
@@ -174,46 +175,54 @@ function Home() {
   );
 }
 
-function Programs({ nav }) {
+export default Home;
+
+import Section from "../components/Section";
+
+function Home() {
   return (
-    <Section
-      id="Programs"
-      title="Programs"
-      intro="Each pathway uses the Six Pillars to fit your context."
-    >
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {PROGRAMS.map((p) => (
-          <article key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
-            <img
-              src={p.image}
-              alt={p.title}
-              className="h-40 w-full object-cover"
-              loading="lazy"
-            />
-            <div className="p-5">
-              <h3 className="font-semibold text-lg">{p.title}</h3>
-              <p className="mt-2 text-sm text-slate-600 line-clamp-3">{p.summary}</p>
-              <div className="mt-4 flex gap-2">
-                <button
-                  onClick={() => nav(`/program/${p.slug}`)}
-                  className="px-4 py-2 rounded-full bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700"
-                >
-                  View details
-                </button>
-                <a
-                  href={`#/Inquire?Program=${encodeURIComponent(p.slug)}`}
-                  className="px-4 py-2 rounded-full border text-sm font-semibold hover:bg-slate-50"
-                >
-                  Request proposal
-                </a>
-              </div>
+    <>
+      <Section>
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h1 className="text-4xl font-extrabold leading-tight">
+              Healing shame. Building resilient youth and families.
+            </h1>
+            <p className="mt-4 text-slate-600">
+              The I LIKE ME Curriculum turns the Six Pillars into daily habits
+              that change how young people see themselves and show up for each other.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <a
+                href="#/programs"
+                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Explore Programs
+              </a>
+              <a
+                href="#/inquire"
+                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+              >
+                Request a Proposal
+              </a>
             </div>
-          </article>
-        ))}
-      </div>
-    </Section>
+          </div>
+          <img
+            src="/images/hero-youth.jpg"
+            alt="Youth empowerment"
+            className="rounded-2xl w-full object-cover"
+          />
+        </div>
+      </Section>
+    </>
   );
 }
+
+export default Home;
+
+import { useMemo } from "react";
+import Section from "../components/Section";
+import { PROGRAMS } from "./Programs"; // assumes Programs.jsx exports PROGRAMS
 
 function ProgramDetail({ slug, nav }) {
   const program = useMemo(
@@ -226,65 +235,73 @@ function ProgramDetail({ slug, nav }) {
       <Section>
         <p className="text-slate-600">Program not found.</p>
         <div className="mt-4">
-          <a href="#/programs" className="text-teal-700 underline">Back to programs</a>
+          <a href="#/programs" className="text-teal-700 underline">
+            Back to programs
+          </a>
         </div>
       </Section>
     );
   }
 
   return (
-    <>
-      <Section>
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          <img
-            src={program.image}
-            alt={program.title}
-            className="rounded-2xl w-full object-cover"
-          />
-          <div>
-            <h1 className="text-3xl font-bold">{program.title}</h1>
-            <p className="mt-3 text-slate-700">{program.summary}</p>
-            <div className="mt-5">
-              <h4 className="font-semibold">Audience</h4>
-              <p className="text-slate-700">{program.audience}</p>
-            </div>
-            <div className="mt-5">
-              <h4 className="font-semibold">Core outcomes</h4>
-              <ul className="list-disc pl-6 text-slate-700">
-                {program.outcomes.map((o) => (
-                  <li key={o}>{o}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-6 flex gap-3">
-              <a
-                href={`#/inquire?program=${encodeURIComponent(program.slug)}`}
-                className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
-              >
-                Request proposal
-              </a>
-              <button
-                onClick={() => nav("/Programs")}
-                className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
-              >
-                Back to programs
-              </button>
-            </div>
+    <Section>
+      <div className="grid md:grid-cols-2 gap-8 items-start">
+        <img
+          src={program.image}
+          alt={program.title}
+          className="rounded-2xl w-full object-cover"
+        />
+        <div>
+          <h1 className="text-3xl font-bold">{program.title}</h1>
+          <p className="mt-3 text-slate-700">{program.summary}</p>
+
+          <div className="mt-5">
+            <h4 className="font-semibold">Audience</h4>
+            <p className="text-slate-700">{program.audience}</p>
+          </div>
+
+          <div className="mt-5">
+            <h4 className="font-semibold">Core outcomes</h4>
+            <ul className="list-disc pl-6 text-slate-700">
+              {program.outcomes.map((o) => (
+                <li key={o}>{o}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-6 flex gap-3">
+            <a
+              href={`#/inquire?program=${encodeURIComponent(program.slug)}`}
+              className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+            >
+              Request proposal
+            </a>
+            <button
+              onClick={() => nav("/programs")}
+              className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
+            >
+              Back to programs
+            </button>
           </div>
         </div>
-      </Section>
-    </>
+      </div>
+    </Section>
   );
 }
 
+export default ProgramDetail;
+
+import Section from "../components/Section";
+import { PROGRAMS } from "./Programs"; // ensure Programs.jsx exports PROGRAMS
+
 function Inquire() {
-  // read ?program=… to prefill hidden field
+  // read ?program=... from the hash to prefill
   const params = new URLSearchParams(window.location.hash.split("?")[1] || "");
   const prefill = params.get("program") || "";
 
   const thanked =
     typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("thanks") === "1";
+    new URLSearchParams(window.location.hash.split("?")[1] || "").get("thanks") === "1";
 
   return (
     <Section
@@ -303,24 +320,15 @@ function Inquire() {
         method="POST"
         data-netlify="true"
         netlify-honeypot="bot-field"
-        action="/?thanks=1"
+        action="/#/inquire?thanks=1"   // return to this route after submit
         className="rounded-2xl border bg-white p-6 grid gap-4 max-w-2xl"
       >
-        {/* Netlify form fields */}
         <input type="hidden" name="form-name" value="program-inquiry" />
-        <p className="hidden">
-          <label>
-            Don’t fill this: <input name="bot-field" />
-          </label>
-        </p>
+        <p className="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
 
         <label className="grid gap-1">
           <span className="text-sm font-medium">Organization</span>
-          <input
-            className="rounded-xl border px-3 py-2"
-            name="organization"
-            required
-          />
+          <input className="rounded-xl border px-3 py-2" name="organization" required />
         </label>
 
         <label className="grid gap-1">
@@ -330,12 +338,7 @@ function Inquire() {
 
         <label className="grid gap-1">
           <span className="text-sm font-medium">Email</span>
-          <input
-            className="rounded-xl border px-3 py-2"
-            type="email"
-            name="email"
-            required
-          />
+          <input className="rounded-xl border px-3 py-2" type="email" name="email" required />
         </label>
 
         <label className="grid gap-1">
@@ -346,13 +349,9 @@ function Inquire() {
             className="rounded-xl border px-3 py-2"
             required
           >
-            <option value="" disabled>
-              Select a program…
-            </option>
+            <option value="" disabled>Select a program…</option>
             {PROGRAMS.map((p) => (
-              <option key={p.slug} value={p.slug}>
-                {p.title}
-              </option>
+              <option key={p.slug} value={p.slug}>{p.title}</option>
             ))}
           </select>
         </label>
@@ -368,16 +367,15 @@ function Inquire() {
           />
         </label>
 
-        <button
-          className="mt-2 rounded-full px-5 py-3 text-white font-semibold"
-          style={{ backgroundColor: "#0f766e" }}
-        >
+        <button className="mt-2 rounded-full px-5 py-3 text-white font-semibold bg-teal-700">
           Send request
         </button>
       </form>
     </Section>
   );
 }
+
+export default Inquire;
 
 /* ---------- App ---------- */
 function App() {
