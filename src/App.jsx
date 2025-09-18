@@ -370,7 +370,7 @@ function Inquire() {
 }
 
 /* ---------- App ---------- */
-export default function App() {
+function App() {
   const [path, nav] = useHashRoute();
 
   return (
