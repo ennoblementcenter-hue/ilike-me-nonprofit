@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* optional small tweaks */
+html, body, #root { height: 100%; }
+.container { @apply max-w-6xl mx-auto px-4; }
+.btn { @apply inline-block rounded-full px-5 py-3
