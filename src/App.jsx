@@ -10,13 +10,14 @@ function Header() {
       {/* Navigation */}
       <nav className="space-x-6">
         <a href="#/" className="hover:underline">Home</a>
-        <a href="#/Programs" className="hover:underline">Programs</a>
-        <a href="#/Inquire" className="hover:underline">Inquire</a>
-        <a href="#/Contact" className="hover:underline">Contact</a>
+        <a href="#/programs" className="hover:underline">Programs</a>
+        <a href="#/inquire" className="hover:underline">Inquire</a>
       </nav>
     </header>
   );
 }
+export default Header;
+
 
 function Footer() {
   return (
@@ -225,7 +226,7 @@ function ProgramDetail({ slug, nav }) {
       <Section>
         <p className="text-slate-600">Program not found.</p>
         <div className="mt-4">
-          <a href="#/Programs" className="text-teal-700 underline">Back to programs</a>
+          <a href="#/programs" className="text-teal-700 underline">Back to programs</a>
         </div>
       </Section>
     );
