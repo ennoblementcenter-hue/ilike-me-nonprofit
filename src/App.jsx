@@ -10,9 +10,9 @@ function Header() {
       {/* Navigation */}
       <nav className="space-x-6">
         <a href="#/" className="hover:underline">Home</a>
-        <a href="#/programs" className="hover:underline">Programs</a>
-        <a href="#/inquire" className="hover:underline">Inquire</a>
-        <a href="#/contact" className="hover:underline">Contact</a>
+        <a href="#/Programs" className="hover:underline">Programs</a>
+        <a href="#/Inquire" className="hover:underline">Inquire</a>
+        <a href="#/Contact" className="hover:underline">Contact</a>
       </nav>
     </header>
   );
