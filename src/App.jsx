@@ -10,9 +10,9 @@ function Header() {
       {/* Navigation */}
       <nav className="space-x-6">
         <a href="#/" className="hover:underline">Home</a>
-        <a href="#/programs" className="hover:underline">Programs</a>
-        <a href="#/inquire" className="hover:underline">Inquire</a>
-        <a href="#/contact" className="hover:underline">Contact</a>
+        <a href="#/Programs" className="hover:underline">Programs</a>
+        <a href="#/Inquire" className="hover:underline">Inquire</a>
+        <a href="#/Contact" className="hover:underline">Contact</a>
       </nav>
     </header>
   );
@@ -149,13 +149,13 @@ function Home() {
             </p>
             <div className="mt-6 flex gap-3">
               <a
-                href="#/programs"
+                href="#/Programs"
                 className="px-5 py-3 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
               >
                 Explore Programs
               </a>
               <a
-                href="#/inquire"
+                href="#/Inquire"
                 className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
               >
                 Request a Proposal
@@ -176,7 +176,7 @@ function Home() {
 function Programs({ nav }) {
   return (
     <Section
-      id="programs"
+      id="Programs"
       title="Programs"
       intro="Each pathway uses the Six Pillars to fit your context."
     >
@@ -200,7 +200,7 @@ function Programs({ nav }) {
                   View details
                 </button>
                 <a
-                  href={`#/inquire?program=${encodeURIComponent(p.slug)}`}
+                  href={`#/Inquire?Program=${encodeURIComponent(p.slug)}`}
                   className="px-4 py-2 rounded-full border text-sm font-semibold hover:bg-slate-50"
                 >
                   Request proposal
@@ -225,7 +225,7 @@ function ProgramDetail({ slug, nav }) {
       <Section>
         <p className="text-slate-600">Program not found.</p>
         <div className="mt-4">
-          <a href="#/programs" className="text-teal-700 underline">Back to programs</a>
+          <a href="#/Programs" className="text-teal-700 underline">Back to programs</a>
         </div>
       </Section>
     );
@@ -263,7 +263,7 @@ function ProgramDetail({ slug, nav }) {
                 Request proposal
               </a>
               <button
-                onClick={() => nav("/programs")}
+                onClick={() => nav("/Programs")}
                 className="px-5 py-3 rounded-full border font-semibold hover:bg-slate-50"
               >
                 Back to programs
@@ -388,7 +388,7 @@ function App() {
 
       {/* Routes */}
       {path === "/" && <Home />}
-      {path === "/programs" && <Programs nav={nav} />}
+      {path === "/Programs" && <Programs nav={nav} />}
       {path.startsWith("/program/") && (
         <ProgramDetail slug={path.split("/")[2]} nav={nav} />
       )}
