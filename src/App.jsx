@@ -383,11 +383,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header />
+      <Header /> {/* or <Header nav={nav}/> if it uses nav */}
 
       {/* Routes */}
       {path === "/" && <Home />}
-      {path === "/Programs" && <Programs nav={nav} />}
+      {path === "/programs" && <Programs nav={nav} />}        {/* <-- lowercase */}
       {path.startsWith("/program/") && (
         <ProgramDetail slug={path.split("/")[2]} nav={nav} />
       )}
