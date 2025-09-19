@@ -9,7 +9,7 @@ import Footer from "./Components/Footer/Footer";
 import Home from "./pages/Home.jsx";
 import Programs from "./pages/Programs.jsx";
 import ProgramDetail from "./pages/ProgramDetail.jsx";
-import Inquire from "./pages/Inquire";
+import Inquire from "./pages/Inquire/Inquire.jsx";
 import Contact from "./pages/Contact";
 import Testimonials from "./pages/Testimonials";
 import Gallery from "./pages/Gallery";
