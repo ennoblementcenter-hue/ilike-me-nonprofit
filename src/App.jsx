@@ -6,14 +6,14 @@ import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 
 // Pages (paths match: src/pages/*.jsx)
-import Home from "./Pages/Home.jsx";
-import Programs from "./Pages/Programs.jsx";
-import ProgramDetail from "./Pages/ProgramDetail.jsx";
-import Inquire from "./Pages/Inquire";
-import Contact from "./Pages/Contact";
-import Testimonials from "./Pages/Testimonials";
-import Gallery from "./Pages/Gallery";
-import Shop from "./Pages/Shop";
+import Home from "./pages/Home.jsx";
+import Programs from "./pages/Programs.jsx";
+import ProgramDetail from "./pages/ProgramDetail.jsx";
+import Inquire from "./pages/Inquire";
+import Contact from "./pages/Contact";
+import Testimonials from "./pages/Testimonials";
+import Gallery from "./pages/Gallery";
+import Shop from "./pages/Shop";
 
 /* ---------- Minimal hash router ---------- */
 function useHashRoute() {
@@ -51,21 +51,21 @@ export default function App() {
         {/* ROUTE SWITCH */}
         {path === "/" && <Home nav={nav} />}
 
-        {path === "/Programs" && <Programs nav={nav} />}
+        {path === "/programs" && <Programs nav={nav} />}
 
         {path.startsWith("/Program/") && (
           <ProgramDetail slug={path.split("/")[2]} nav={nav} />
         )}
 
-        {path.startsWith("/Inquire") && <Inquire />}
+        {path.startsWith("/inquire") && <Inquire />}
 
-        {path === "/Contact" && <Contact />}
+        {path === "/contact" && <Contact />}
 
-        {path === "/Testimonials" && <Testimonials />}
+        {path === "/testimonials" && <Testimonials />}
 
-        {path === "/Gallery" && <Gallery />}
+        {path === "/gallery" && <Gallery />}
 
-        {path === "/Shop" && <Shop />}
+        {path === "/shop" && <Shop />}
 
         {/* 404 */}
         {[
