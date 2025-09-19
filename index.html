@@ -3,21 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>I LIKE ME — Healing shame, building resilient youth and families</title>
+    <title>I LIKE ME</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body>
-    <!-- React app mounts here -->
     <div id="root"></div>
 
-    <!-- Netlify hidden form (for detection) -->
+    <!-- Netlify form detection (keep hidden) -->
     <form name="program-inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="program-inquiry" />
+      <p class="hidden"><label>Don’t fill this: <input name="bot-field" /></label></p>
       <input type="text" name="organization" />
       <input type="text" name="name" />
       <input type="email" name="email" />
-      <select name="program"></select>
+      <select name="program"><option>sample</option></select>
       <textarea name="goals"></textarea>
     </form>
 
-    <!-- Your main React entry script -->
-    <script type
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
