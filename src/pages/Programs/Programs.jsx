@@ -1,8 +1,46 @@
 import React from "react";
 import Section from "../../components/Section/Section";
+import { PROGRAMS } from "../../data/programs";
+export default function Programs({ nav }) {
+  return (
+    <Section
+      id="programs"
+      title="Our Programs"
+      intro="Each program is rooted in the Six Pillars of I LIKE ME, designed to build resilience and self-worth."
+    >
+      <div
+        className="relative rounded-2xl p-10"
+        style={{
+          backgroundImage: "url('/images/logo.png')",   // Path to your logo file
+          backgroundSize: "200px",                      // Adjust size of logo
+          backgroundRepeat: "no-repeat",                // Don’t tile
+          backgroundPosition: "center",                 // Place logo in center
+          backgroundColor: "rgba(255,255,255,0.85)",    // Faint overlay
+          backgroundBlendMode: "lighten",               // Helps text stay legible
+        }}
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          {PROGRAMS.map((p) => (
+            <div
+              key={p.slug}
+              className="rounded-xl border bg-white/80 backdrop-blur-sm shadow-sm p-6"
+            >
+              <h3 className="text-xl font-semibold">{p.title}</h3>
+              <p className="mt-2 text-slate-600">{p.summary}</p>
+              <button
+                onClick={() => nav(`/program/${p.slug}`)}
+                className="mt-4 px-5 py-2 rounded-full bg-teal-600 text-white font-semibold hover:bg-teal-700"
+              >
+                Learn more
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+}
 
-/** Exported so ProgramDetail can import:  import { PROGRAMS } from "../Programs/Programs" */
-export const PROGRAMS = [
   {
     slug: "youth",
     title: "Youth Program",
