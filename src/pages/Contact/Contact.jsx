@@ -29,14 +29,14 @@ export default function Contact() {
           <div className="pt-2 space-y-2 text-sm">
             <p>
               <span className="font-medium">Email:</span>{" "}
-              <a className="text-teal-700 underline" href="mailto:info@ilike-me.org">
-                info@ilike-me.org
+              <a className="text-teal-700 underline" href="mailto:david@ilike-me.org">
+                david@ilike-me.org
               </a>
             </p>
             <p>
               <span className="font-medium">Phone:</span>{" "}
-              <a className="text-teal-700 underline" href="tel:+1-555-555-5555">
-                (555) 555-5555
+              <a className="text-teal-700 underline" href="tel:+1-470-210-6371">
+                (470) 210-6371
               </a>
             </p>
             <p className="text-slate-600">
@@ -56,7 +56,7 @@ export default function Contact() {
           <div className="pt-4 border-t">
             <h4 className="font-semibold mb-2">Book a call</h4>
             <a
-              href="https://calendly.com/YOUR-CALENDLY-SLUG"
+              href="https://calendly.com/ilikeme/30min"
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded-full px-5 py-2 bg-teal-600 text-white font-semibold hover:bg-teal-700"
