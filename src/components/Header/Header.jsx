@@ -1,32 +1,18 @@
-import React from "react";
-
-export default function Header({ nav }) {
-  const items = [
-    ["/", "Home"],
-    ["/programs", "Programs"],
-    ["/inquire", "Request proposal"],
-    ["/contact", "Contact"],
-  ];
-
+export default function Header() {
   return (
     <header className="flex justify-between items-center p-4 bg-teal-600 text-white">
-      {/* Logo */}
       <div className="flex items-center gap-2">
-        <img
-          src="/images/logo.png"   // place logo in public/images/logo.png
-          alt="I LIKE ME logo"
-          className="h-10 w-auto"
-        />
+        <img src="/images/logo.png" alt="I LIKE ME logo" className="h-10 w-auto" />
         <span className="text-lg font-bold">I LIKE ME</span>
       </div>
-
-      {/* Navigation */}
-      <nav className="space-x-6">
-        {items.map(([to, label]) => (
-          <a key={to} href={`#${to}`} className="hover:underline">
-            {label}
-          </a>
-        ))}
+      <nav className="space-x-4">
+        <a href="#/" className="hover:underline">Home</a>
+        <a href="#/programs" className="hover:underline">Programs</a>
+        <a href="#/gallery" className="hover:underline">Gallery</a>
+        <a href="#/testimonials" className="hover:underline">Testimonials</a>
+        <a href="#/shop" className="hover:underline">Shop</a>
+        <a href="#/inquire" className="hover:underline">Request proposal</a>
+        <a href="#/contact" className="hover:underline">Contact</a>
       </nav>
     </header>
   );

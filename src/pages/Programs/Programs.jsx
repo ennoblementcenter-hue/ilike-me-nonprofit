@@ -1,70 +1,87 @@
-// src/pages/Programs/Programs.jsx
 import React from "react";
 import Section from "../../components/Section/Section";
 
+/** Exported so ProgramDetail can import:  import { PROGRAMS } from "../Programs/Programs" */
 export const PROGRAMS = [
   {
     slug: "youth",
     title: "Youth Program",
-    summary: "Helping young people build resilience and emotional intelligence.",
-    audience: "Youth ages 13–18 in schools, after-school, and community settings.",
-    outcomes: [
-      "Boost self-esteem",
-      "Develop emotional intelligence",
-      "Strengthen peer support",
-    ],
-    image: "/images/youth-program.jpg",  // ✅ make sure file exists
+    image: "/public/images/programs-youth.jpg",
+    summary:
+      "A 6–12 week curriculum teaching the Six Pillars with rituals, exercises, and peer practice.",
+  },
+  {
+    slug: "bedside",
+    title: "Bedside Program",
+    image: "/public/images/programs-bedside.jpg",
+    summary:
+      "One-to-one healing support for youth and families navigating medical or crisis settings.",
   },
   {
     slug: "ipv",
     title: "IPV Recovery",
-    summary: "Supporting individuals healing from intimate partner violence.",
-    audience: "Survivors and support networks.",
-    outcomes: [
-      "Promote safety",
-      "Rebuild trust",
-      "Empower resilience",
-    ],
-    image: "/images/ipv-recovery.jpg",   // ✅ add file to /public/images
+    image: "/public/images/programs-ipv.jpg",
+    summary:
+      "Trauma-informed recovery circles focused on safety, self-worth, and sustainable boundaries.",
+  },
+  {
+    slug: "lgbtq",
+    title: "LGBTQ+ Belonging",
+    image: "/public/images/programs-lgbtq.jpg",
+    summary:
+      "Affirming groups that build identity safety, voice, and community protective factors.",
+  },
+  {
+    slug: "staff",
+    title: "Staff PD & Coaching",
+    image: "/public/images/programs-staff.jpg",
+    summary:
+      "Workshops and coaching that embed the Six Pillars into daily practice and school culture.",
   },
   {
     slug: "reentry",
-    title: "Reentry Program",
-    summary: "Helping justice-involved youth transition successfully.",
-    audience: "Youth reentering schools and communities.",
-    outcomes: [
-      "Reduce recidivism",
-      "Build positive identity",
-      "Strengthen community ties",
-    ],
-    image: "/images/reentry.jpg",        // ✅ add file to /public/images
+    title: "Reentry & Transition",
+    image: "/public/images/programs-reentry.jpg",
+    summary:
+      "A bridge program for youth returning from detention or placement—stability, skills, support.",
   },
 ];
 
-export default function Programs() {
+export default function Programs({ nav }) {
   return (
     <Section
-      id="programs"
-      title="Our Programs"
-      intro="Explore our initiatives designed to build resilience and empowerment."
+      title="Programs"
+      intro="Choose a program to see outcomes, audiences, and how we implement with partners."
     >
-      <div className="grid md:grid-cols-3 gap-8">
-        {PROGRAMS.map((program) => (
-          <div key={program.slug} className="rounded-xl border bg-white p-4 shadow-sm">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROGRAMS.map((p) => (
+          <article key={p.slug} className="rounded-2xl border bg-white overflow-hidden">
             <img
-              src={program.image}
-              alt={program.title}
-              className="rounded-lg mb-4 object-cover h-40 w-full"
+              src={p.image}
+              alt={p.title}
+              className="h-44 w-full object-cover"
+              onError={(e) => (e.currentTarget.style.display = "none")}
             />
-            <h3 className="text-xl font-bold">{program.title}</h3>
-            <p className="text-slate-600 mt-2">{program.summary}</p>
-            <a
-              href={`#/program/${program.slug}`}
-              className="mt-4 inline-block text-teal-700 font-semibold hover:underline"
-            >
-              Learn more →
-            </a>
-          </div>
+            <div className="p-5">
+              <h3 className="font-semibold text-lg">{p.title}</h3>
+              <p className="mt-2 text-sm text-slate-600">{p.summary}</p>
+
+              <div className="mt-4 flex gap-3">
+                <a
+                  href={`#/program/${p.slug}`}
+                  className="px-4 py-2 rounded-full bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700"
+                >
+                  Learn more
+                </a>
+                <a
+                  href={`#/inquire?program=${encodeURIComponent(p.slug)}`}
+                  className="px-4 py-2 rounded-full border text-sm font-semibold hover:bg-slate-50"
+                >
+                  Request proposal
+                </a>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </Section>

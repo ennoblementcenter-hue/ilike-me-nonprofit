@@ -9,6 +9,9 @@ import Home from "./pages/Home/Home.jsx";
 import Programs from "./pages/Programs/Programs.jsx";
 import ProgramDetail from "./pages/ProgramDetail/ProgramDetail.jsx";
 import Inquire from "./pages/Inquire/Inquire.jsx";
+import Gallery from "./pages/Gallery/Gallery";
+import Testimonials from "./pages/Testimonials/Testimonials";
+import Shop from "./pages/Shop/Shop";
 
 /* ---------- Minimal hash router ---------- */
 function useHashRoute() {
@@ -38,6 +41,9 @@ export default function App() {
         <ProgramDetail slug={path.split("/")[2]} nav={nav} />
       )}
       {path.startsWith("/inquire") && <Inquire />}
+{path === "/gallery" && <Gallery />}
+{path === "/testimonials" && <Testimonials />}
+{path === "/shop" && <Shop />}
 
       <Footer />
     </div>
